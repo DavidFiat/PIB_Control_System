@@ -18,8 +18,7 @@ public class Software {
 
 	public Software() {
 		countries = new ArrayList<Country>();
-		Country b = new Country("Colombia", 123, 456.78, "Duque", 56, "Pacifico");
-		countries.add(b);
+		
 	}
 
 	public ArrayList<Country> getCountries() {
