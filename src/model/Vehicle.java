@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+import exceptions.RepeatedVehicleException;
+
 public class Vehicle {
 
 	public static final int LAND_VEHICLE = 1;

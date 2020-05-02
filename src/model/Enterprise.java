@@ -11,6 +11,9 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import exceptions.RepeatedEmployeeException;
+import exceptions.RepeatedEnterpriseException;
+
 public abstract class Enterprise implements Imports, Exports, Serializable {
 
 	protected String name;

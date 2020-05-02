@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="377.0" prefWidth="669.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="36.0" layoutY="14.0" prefHeight="74.0" prefWidth="527.0" text="AGREGAR CIUDADANO" textFill="#5900ff">
+         <font>
+            <Font size="48.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="232.0" fitWidth="252.0" layoutX="423.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../Downloads/WhatsApp%20Image%202020-04-20%20at%207.17.42%20PM.jpeg" />
+         </image>
+      </ImageView>
+      <Label layoutX="36.0" layoutY="107.0" text="Nombre:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="36.0" layoutY="147.0" text="Identificación:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="36.0" layoutY="184.0" text="País:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="nombreCiudadano" layoutX="136.0" layoutY="103.0" prefHeight="0.0" prefWidth="132.0" />
+      <TextField fx:id="idCiudadano" layoutX="136.0" layoutY="144.0" prefHeight="0.0" prefWidth="132.0" />
+      <TextField fx:id="paisCiudadano" layoutX="136.0" layoutY="181.0" prefHeight="0.0" prefWidth="132.0" />
+      <RadioButton layoutX="36.0" layoutY="251.0" mnemonicParsing="false" text="Adulto">
+         <toggleGroup>
+            <ToggleGroup fx:id="clasifi" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton layoutX="123.0" layoutY="251.0" mnemonicParsing="false" text="Niño" toggleGroup="$clasifi" />
+      <RadioButton layoutX="198.0" layoutY="251.0" mnemonicParsing="false" text="Mascota" toggleGroup="$clasifi" />
+      <Label layoutX="36.0" layoutY="217.0" text="Esta usted registrando a:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Button layoutX="123.0" layoutY="307.0" mnemonicParsing="false" text="¡LISTO!">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

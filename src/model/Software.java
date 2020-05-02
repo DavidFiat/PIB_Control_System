@@ -7,6 +7,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.*;
 
+import exceptions.RepeatedCitizenException;
+import exceptions.RepeatedEnterpriseException;
+import exceptions.SameNameCountryException;
+import exceptions.SamePresidentsNameException;
+
 public class Software {
 
 	private ArrayList<Country> countries;
@@ -160,16 +165,21 @@ public class Software {
 	}
 
 	public void addCountry(Country p) throws SameNameCountryException, SamePresidentsNameException {
-		for (int i = 0; i < countries.size(); i++) {
-			if (p.getName().equals(countries.get(i).getName())) {
-				throw new SameNameCountryException(p.getName());
+		boolean added = false;
+		if (countries.size() == 0) {
+			countries.add(p);
+		} else {
+			for (int i = 0; i < countries.size() && !added; i++) {
+				if (p.getName().compareTo(countries.get(i).getName())==0) {
+					throw new SameNameCountryException(p.getName());
 
-			} else if (p.getPresident().equals(countries.get(i).getPresident())) {
-				throw new SamePresidentsNameException(p.getPresident());
+				} else if (p.getPresident().compareTo(countries.get(i).getPresident())==0) {
+					throw new SamePresidentsNameException(p.getPresident());
 
-			} else {
-				countries.add(p);
-
+				} else {
+					countries.add(p);
+					added=true;
+				}
 			}
 		}
 	}
@@ -223,8 +233,7 @@ public class Software {
 		}
 
 	}
-	
-	
+
 	public void addEnterprise(Enterprise a, String country) {
 		for (int i = 0; i < countries.size(); i++) {
 			if (country.equals(countries.get(i).getName())) {
@@ -237,12 +246,5 @@ public class Software {
 		}
 
 	}
-	
-	
-	
-	
-	
-	
-	
 
 }

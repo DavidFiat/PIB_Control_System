@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+import exceptions.RepeatedEmployeeException;
+
 public class Employee {
 
 	private String name;

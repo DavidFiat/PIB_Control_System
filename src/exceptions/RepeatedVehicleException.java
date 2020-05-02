@@ -1,4 +1,4 @@
-package model;
+package exceptions;
 
 public class RepeatedVehicleException extends Exception {
 	public RepeatedVehicleException(String a) {

@@ -8,6 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import exceptions.RepeatedVehicleException;
+
 public class Transport extends ForProfitEnterprise {
 
 	private Vehicle rootVehicle;

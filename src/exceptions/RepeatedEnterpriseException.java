@@ -1,4 +1,4 @@
-package model;
+package exceptions;
 
 public class RepeatedEnterpriseException extends Exception {
 	public RepeatedEnterpriseException(String a) {

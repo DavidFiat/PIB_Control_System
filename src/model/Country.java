@@ -8,6 +8,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import exceptions.RepeatedCitizenException;
+import exceptions.RepeatedEnterpriseException;
+
 public class Country implements Serializable{
 	private String name;
 	private int population;
@@ -166,13 +169,11 @@ public class Country implements Serializable{
 		}
 		oos.close();
 	}
-
 	public void loadEnterprises() throws IOException, ClassNotFoundException, RepeatedEnterpriseException {
 		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data/enterprises.fiat"));
 		addEnterprise((Enterprise) ois.readObject());
 
 	}
-
 	public void saveCitizen() throws IOException {
 		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data/citizens.fiat"));
 		if (rootCitizen != null) {
@@ -182,11 +183,9 @@ public class Country implements Serializable{
 		oos.close();
 
 	}
-
 	public void loadCitizen() throws IOException, ClassNotFoundException, RepeatedCitizenException {
 		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data/citizens.fiat"));
 		addCitizen((Citizen) ois.readObject());
-
 	}
 
 }

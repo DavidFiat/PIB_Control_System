@@ -1,4 +1,4 @@
-package model;
+package exceptions;
 
 public class RepeatedEmployeeException extends Exception {
 	public RepeatedEmployeeException(String a) {
