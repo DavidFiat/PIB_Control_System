@@ -7,10 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.*;
 
-import exceptions.RepeatedCitizenException;
-import exceptions.RepeatedEnterpriseException;
-import exceptions.SameNameCountryException;
-import exceptions.SamePresidentsNameException;
+import exceptions.*;
 
 public class Software {
 
@@ -18,7 +15,6 @@ public class Software {
 
 	public Software() {
 		countries = new ArrayList<Country>();
-		
 	}
 
 	public ArrayList<Country> getCountries() {
@@ -131,10 +127,10 @@ public class Software {
 		boolean find = false;
 		while (begining <= end && !find) {
 			int half = (begining + end) / 2;
-			if (countries.get(half).getName().equals(e)) {
+			if (countries.get(half).getName().equalsIgnoreCase(e)) {
 				a = countries.get(half);
 				find = true;
-			} else if (countries.get(half).getName().compareTo(e) > 0) {
+			} else if (countries.get(half).getName().compareToIgnoreCase(e) > 0) {
 				end = half - 1;
 			} else {
 				begining = half + 1;
@@ -151,10 +147,10 @@ public class Software {
 		boolean find = false;
 		while (begining <= end && !find) {
 			int half = (begining + end) / 2;
-			if (countries.get(half).getPresident().equals(e)) {
+			if (countries.get(half).getPresident().equalsIgnoreCase(e)) {
 				a = countries.get(half);
 				find = true;
-			} else if (countries.get(half).getPresident().compareTo(e) > 0) {
+			} else if (countries.get(half).getPresident().compareToIgnoreCase(e) > 0) {
 				end = half - 1;
 			} else {
 				begining = half + 1;
@@ -164,20 +160,19 @@ public class Software {
 	}
 
 	public void addCountry(Country p) throws SameNameCountryException, SamePresidentsNameException {
-		boolean added = false;
 		if (countries.size() == 0) {
 			countries.add(p);
 		} else {
-			for (int i = 0; i < countries.size() && !added; i++) {
-				if (p.getName().compareTo(countries.get(i).getName())==0) {
+			for (int i = 0; i < countries.size(); i++) {
+				if (p.getName().equals(countries.get(i).getName())) {
 					throw new SameNameCountryException(p.getName());
 
-				} else if (p.getPresident().compareTo(countries.get(i).getPresident())==0) {
+				} else if (p.getPresident().equals(countries.get(i).getPresident())) {
 					throw new SamePresidentsNameException(p.getPresident());
 
 				} else {
 					countries.add(p);
-					added=true;
+
 				}
 			}
 		}
@@ -193,14 +188,6 @@ public class Software {
 		}
 		return PIB;
 	}
-
-//	public String showArray() {
-//		String mess = "";
-//		for (int i = 0; i < countries.size(); i++) {
-//			mess += countries.get(i).getName() + "\n";
-//		}
-//		return mess;
-//	}
 
 	public void saveCountries() throws IOException {
 		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data/countries.fiat"));

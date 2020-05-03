@@ -1,9 +1,8 @@
+package model;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-
-import model.Country;
-import model.Software;
 
 class SoftwareTest {
 	private Software software;
@@ -12,9 +11,9 @@ class SoftwareTest {
 	public void setupSoftwareStage() {
 		software = new Software();
 
-		Country a = new Country("Colombia", 123, 456.78, "Duque", 56, "Pacifico");
+		Country a = new Country("Colombia", 123, 456.78, "Uribe", 56, "Pacifico");
 		Country b = new Country("Venezuela", 23, 4556.78, "Maduro", 428, "Pacifico");
-		Country c = new Country("Japon", 56123, 4456.78, "Shan-Chi", 6556, "Indico");
+		Country c = new Country("Japon", 56123, 4456.78, "Dan-Chi", 6556, "Indico");
 
 		software.getCountries().add(a);
 		software.getCountries().add(b);
@@ -22,7 +21,7 @@ class SoftwareTest {
 	}
 
 	@Test
-	public void testSortCountriesByNameTest() {
+	public void testSortCountriesByName() {
 		setupSoftwareStage();
 		software.sortCountriesByName();
 		for (int i = 0; i < software.getCountries().size() - 1; i++) {
@@ -35,7 +34,7 @@ class SoftwareTest {
 		setupSoftwareStage();
 		software.sortCountriesByPopulation();
 		for (int i = 0; i < software.getCountries().size() - 1; i++) {
-			assertTrue(software.getCountries().get(i).compareByPopulation(software.getCountries().get(i + 1)) < 0);
+			assertTrue(software.getCountries().get(i).compareByPopulation(software.getCountries().get(i + 1)) <= 0);
 		}
 	}
 
@@ -44,7 +43,7 @@ class SoftwareTest {
 		setupSoftwareStage();
 		software.sortCountriesByExtension();
 		for (int i = 0; i < software.getCountries().size() - 1; i++) {
-			assertTrue(software.getCountries().get(i).compareByExtension(software.getCountries().get(i + 1)) < 0);
+			assertTrue(software.getCountries().get(i).compareByExtension(software.getCountries().get(i + 1)) <= 0);
 		}
 	}
 
@@ -62,7 +61,7 @@ class SoftwareTest {
 		setupSoftwareStage();
 		software.sortCountriesByPublicSpending();
 		for (int i = 0; i < software.getCountries().size() - 1; i++) {
-			assertTrue(software.getCountries().get(i).compareByPublicSpending(software.getCountries().get(i + 1)) < 0);
+			assertTrue(software.getCountries().get(i).compareByPublicSpending(software.getCountries().get(i + 1)) <= 0);
 		}
 	}
 
@@ -71,7 +70,7 @@ class SoftwareTest {
 		setupSoftwareStage();
 		software.sortCountriesBySea();
 		for (int i = 0; i < software.getCountries().size() - 1; i++) {
-			assertTrue(software.getCountries().get(i).compareBySea(software.getCountries().get(i + 1)) < 0);
+			assertTrue(software.getCountries().get(i).compareBySea(software.getCountries().get(i + 1)) <= 0);
 		}
 	}
 
@@ -79,20 +78,23 @@ class SoftwareTest {
 	public void testBinarySearchCountryByName() {
 		setupSoftwareStage();
 		software.sortCountriesByName();
-		for (int i = 0; i < software.getCountries().size(); i++) {
-			assertTrue(software.binarySearchCountryByName("Colombia")
-					.equals(new Country("Colombia", 123, 456.78, "Duque", 56, "Pacifico")));
-		}
+		Country z = software.binarySearchCountryByName("Colombia");
+		assertTrue(z == software.getCountries().get(0));
+		assertTrue(z.getName().equalsIgnoreCase("colombia"));
+		// .equals(new Country("Colombia", 123, 456.78, "Duque", 56, "Pacifico")));
+
 	}
 
 	@Test
 	public void testBinarySearchCountryByPresident() {
 		setupSoftwareStage();
 		software.sortCountriesByPresident();
-		for (int i = 0; i < software.getCountries().size(); i++) {
-			assertTrue(software.binarySearchCountryByPresident("Maduro")
-					.equals(new Country("Venezuela", 23, 4556.78, "Maduro", 428, "Pacifico")));
-		}
+
+		Country z = software.binarySearchCountryByPresident("Maduro");
+		assertTrue(z == software.getCountries().get(1));
+		assertTrue(z.getName().equalsIgnoreCase("veneZuELa"));
+		// .equals(new Country("Venezuela", 23, 4556.78, "Maduro", 428, "Pacifico")));
+
 	}
 
 }

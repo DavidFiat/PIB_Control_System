@@ -102,16 +102,16 @@ public class Country implements Serializable{
 		return population - (p.getPopulation());
 	}
 
-	public int compareByExtension(Country p) {
-		return (int) (extension - (p.getExtension()));
+	public double compareByExtension(Country p) {
+		return (extension - (p.getExtension()));
 	}
 
 	public int compareByPresident(Country p) {
 		return president.compareTo(p.getPresident());
 	}
 
-	public int compareByPublicSpending(Country p) {
-		return (int) (publicSpending - (p.getPublicSpending()));
+	public double compareByPublicSpending(Country p) {
+		return (publicSpending - (p.getPublicSpending()));
 	}
 
 	public int compareBySea(Country p) {
