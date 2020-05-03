@@ -17,7 +17,7 @@ class CountryTest {
 	}
 
 	@Test
-	private void addTest() {
+	private void addEnterpriseTest() {
 		setupStage();
 		Enterprise a1 = new Transport("Confenalco", "535336", "22/11/1980", 65435.76, 54678);
 		Enterprise a = new Education("Icesi", "5675", "22/05/1990", 56993, "University", "Piedrahita");
@@ -49,6 +49,11 @@ class CountryTest {
 		}
 		assertTrue(catched);
 
+	}
+
+	@Test
+	public void addCitizenTest() {
+		setupStage();
 		Citizen c = new Pet("Pepe", "3456", 5678, true, "Labrador");
 		Citizen t = new Adult("Daniel", "64643456", 5678, 35);
 		Citizen r = new Child("Juan", "1002567502", 34567, true, 345);
@@ -74,22 +79,21 @@ class CountryTest {
 			e.printStackTrace();
 		}
 
-		catched = false;
+		boolean catched = false;
 		try {
-			country.addEnterprise(b);
-		} catch (RepeatedEnterpriseException e1) {
+			country.addCitizen(r);
+		} catch (RepeatedCitizenException e1) {
 			catched = true;
 		}
 		assertTrue(catched);
-
 	}
 
 	@Test
 	public void searchCitizenTest() {
 		setupStage();
-		addTest();
+		addCitizenTest();
 
-		// Searching an inexistent Participant
+		// Searching an inexistent Citizen
 		String ID = "1";
 		country.search(ID);
 		assertNull(country.search(ID));
