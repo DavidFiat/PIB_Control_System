@@ -163,19 +163,29 @@ public class Software {
 		if (countries.size() == 0) {
 			countries.add(p);
 		} else {
-			for (int i = 0; i < countries.size(); i++) {
+			boolean sameCountry = false;
+			boolean samePresident = false;
+			for (int i = 0; !sameCountry && !samePresident && i < countries.size(); i++) {
 				if (p.getName().equals(countries.get(i).getName())) {
-					throw new SameNameCountryException(p.getName());
+					sameCountry = true;
+				}
 
-				} else if (p.getPresident().equals(countries.get(i).getPresident())) {
-					throw new SamePresidentsNameException(p.getPresident());
-
-				} else {
-					countries.add(p);
+				if (p.getPresident().equals(countries.get(i).getPresident())) {
+					samePresident = true;
 
 				}
 			}
+			if (sameCountry) {
+				throw new SameNameCountryException(p.getName());
+
+			} else if (samePresident) {
+				throw new SamePresidentsNameException(p.getPresident());
+
+			} else {
+				countries.add(p);
+			}
 		}
+
 	}
 
 	public double PIB(String country) {
