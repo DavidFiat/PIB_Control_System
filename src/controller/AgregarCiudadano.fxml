@@ -40,22 +40,29 @@
       <TextField fx:id="nombreCiudadano" layoutX="136.0" layoutY="103.0" prefHeight="0.0" prefWidth="132.0" />
       <TextField fx:id="idCiudadano" layoutX="136.0" layoutY="144.0" prefHeight="0.0" prefWidth="132.0" />
       <TextField fx:id="paisCiudadano" layoutX="136.0" layoutY="181.0" prefHeight="0.0" prefWidth="132.0" />
-      <RadioButton layoutX="36.0" layoutY="251.0" mnemonicParsing="false" text="Adulto">
+      <RadioButton fx:id="adulto" layoutX="36.0" layoutY="292.0" mnemonicParsing="false" text="Adulto">
          <toggleGroup>
             <ToggleGroup fx:id="clasifi" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton layoutX="123.0" layoutY="251.0" mnemonicParsing="false" text="Niño" toggleGroup="$clasifi" />
-      <RadioButton layoutX="198.0" layoutY="251.0" mnemonicParsing="false" text="Mascota" toggleGroup="$clasifi" />
-      <Label layoutX="36.0" layoutY="217.0" text="Esta usted registrando a:">
+      <RadioButton fx:id="niño" layoutX="123.0" layoutY="292.0" mnemonicParsing="false" text="Niño" toggleGroup="$clasifi" />
+      <RadioButton fx:id="mascota" layoutX="202.0" layoutY="292.0" mnemonicParsing="false" text="Mascota" toggleGroup="$clasifi" />
+      <Label layoutX="36.0" layoutY="251.0" text="Esta usted registrando a:">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Button layoutX="123.0" layoutY="307.0" mnemonicParsing="false" text="¡LISTO!">
+      <Button layoutX="123.0" layoutY="323.0" mnemonicParsing="false" onAction="#addPerson" text="¡LISTO!">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
+      <Label layoutX="37.0" layoutY="224.0" />
+      <Label layoutX="36.0" layoutY="223.0" text="Gastos:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="gastosCiudadanos" layoutX="136.0" layoutY="220.0" prefHeight="0.0" prefWidth="132.0" />
    </children>
 </AnchorPane>

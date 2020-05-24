@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import exceptions.RepeatedVehicleException;
+import customExceptions.*;
 
 public class Transport extends ForProfitEnterprise {
 

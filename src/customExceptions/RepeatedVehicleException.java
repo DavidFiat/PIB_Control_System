@@ -1,4 +1,4 @@
-package exceptions;
+package customExceptions;
 
 public class RepeatedVehicleException extends Exception {
 	public RepeatedVehicleException(String a) {

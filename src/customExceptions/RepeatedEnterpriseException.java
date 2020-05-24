@@ -1,4 +1,4 @@
-package exceptions;
+package customExceptions;
 
 public class RepeatedEnterpriseException extends Exception {
 	public RepeatedEnterpriseException(String a) {

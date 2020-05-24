@@ -1,4 +1,4 @@
-package exceptions;
+package customExceptions;
 
 public class RepeatedCitizenException extends Exception {
 

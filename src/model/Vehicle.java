@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-import exceptions.RepeatedVehicleException;
+import customExceptions.*;
 
 public class Vehicle {
 

@@ -11,8 +11,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import exceptions.RepeatedEmployeeException;
-import exceptions.RepeatedEnterpriseException;
+import customExceptions.*;
 
 public abstract class Enterprise implements Imports, Exports, Serializable {
 

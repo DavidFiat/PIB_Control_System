@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="733.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
-        </columns>
-      </TableView>
    </center>
-   <top>
-      <Label text="ORDENAR" BorderPane.alignment="CENTER" />
-   </top>
+   <center>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <content>
+            <TableView fx:id="countryListTable" prefHeight="518.0" prefWidth="742.0">
+              <columns>
+                <TableColumn fx:id="columnName" prefWidth="111.19997906684875" text="Nombre" />
+                <TableColumn fx:id="columnPopulation" prefWidth="105.5999755859375" text="Habitantes" />
+                  <TableColumn fx:id="columnExtension" prefWidth="126.39997863769531" text="Extension" />
+                  <TableColumn fx:id="columnPresident" prefWidth="130.39996337890625" text="Presidente" />
+                  <TableColumn fx:id="columnSpending" prefWidth="130.39996337890625" text="Gastos Públicos" />
+                  <TableColumn fx:id="columnSea" prefWidth="112.800048828125" text="Mar" />
+              </columns>
+            </TableView>
+         </content>
+      </ScrollPane>
+   </center>
 </BorderPane>

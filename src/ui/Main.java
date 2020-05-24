@@ -6,7 +6,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import model.*;
-import exceptions.*;
+import customExceptions.*;
 
 public class Main {
 

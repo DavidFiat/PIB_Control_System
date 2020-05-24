@@ -4,8 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import exceptions.RepeatedCitizenException;
-import exceptions.RepeatedEnterpriseException;
+import customExceptions.*;
 
 class CountryTest {
 

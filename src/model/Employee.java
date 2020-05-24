@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-import exceptions.RepeatedEmployeeException;
+import customExceptions.*;
 
 public class Employee {
 

@@ -8,8 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import exceptions.RepeatedCitizenException;
-import exceptions.RepeatedEnterpriseException;
+import customExceptions.*;
 
 public class Country implements Serializable{
 	private String name;
