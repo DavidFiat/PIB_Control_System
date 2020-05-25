@@ -110,6 +110,10 @@ public class PIBController {
 	private TextField dueño;
 	private TextField calificacion;
 	private TextField cantidad;
+	//ventana extra de educacion
+	private TextField gastosEdu;
+	private TextField typeEdu;
+	private TextField rector;
 	// agregar vehiculo
 	// ----------------------
 	@FXML
@@ -232,6 +236,13 @@ public class PIBController {
 
 		tf = new TextField();
 		transporte();
+		
+		
+		gastosEdu = new TextField();
+		typeEdu = new TextField();
+		typeEdu.setPromptText("Privada/Publica");
+		rector = new TextField();
+		educacion();
 
 		mainScreen.getChildren().clear();
 		mainScreen.setCenter(pib);
@@ -538,71 +549,180 @@ public class PIBController {
 		});
 
 	}
+	@FXML
+	public void educacion() {
+
+		Button bt = new Button();
+		Stage s = new Stage();
+
+		educacion.setOnAction(e -> {
+			Pane p = new Pane();
+			Label inf = new Label();
+			inf.setText("¡INFO EXTRA!");
+			inf.setLayoutX(123);
+			inf.setLayoutY(14);
+
+			Label lb = new Label();
+			lb.setText("Gastos:");
+			lb.setLayoutX(27.0);
+			lb.setLayoutY(65.0);
+			// ganancias text
+			gastosEdu.setLayoutX(198.0);
+			gastosEdu.setLayoutY(61.0);
+			// label type
+			Label type = new Label();
+			type.setText("Type:");
+			type.setLayoutX(27.0);
+			type.setLayoutY(101.0);
+			// dueño text
+			typeEdu.setLayoutX(198.0);
+			typeEdu.setLayoutY(97);
+			// label rector
+			Label rec = new Label();
+			rec.setText("Calificacion:");
+			rec.setLayoutX(27.0);
+			rec.setLayoutY(136.0);
+			// calificacion text
+			rector.setLayoutX(198.0);
+			rector.setLayoutY(132.0);
+			// label cantidad
+
+			bt.setText("¡OK!");
+			bt.setLayoutX(167);
+			bt.setLayoutY(211);
+
+			p.getChildren().addAll(inf, gastosEdu, lb, typeEdu, type, rector, rec, bt);
+
+			Scene sc = new Scene(p, 450, 300);
+			s.setScene(sc);
+			s.show();
+
+		});
+		bt.setOnAction(e -> {
+			if (gastosEdu.getText().equals("") || typeEdu.getText().equals("") || rector.getText().equals("")) {
+				Alert error = new Alert(AlertType.WARNING);
+				error.setTitle("Fallo en el registro");
+				error.setHeaderText("Alguno de los requerimientos está vacío");
+				error.setContentText("Por favor llene todos los campos");
+
+				error.showAndWait();
+			} else {
+
+				s.close();
+
+			}
+		});
+
+	}
 
 	// --------------------------------
 	// agregar una empresa
 	// --------------------------------
-	public void addEnterprise() throws RepeatedEnterpriseException, IOException {
+	public void addEnterprise() throws IOException {
 
 		String name = nombreEmpresa.getText();
 		String id = idEmpresa.getText();
 		String date = fechaCreacion.getText();
 		String gasto = gastosEmpresa.getText();
-		String country = pais.getText();
+
+		Country c = en.searchCountry(pais.getText());
+
+		if (c == null) {
+			Alert successful = new Alert(AlertType.WARNING);
+			successful.setTitle("ERROR EN REGISTRO");
+			successful.setHeaderText(null);
+			successful.setContentText("EL PAÍS NO EXISTE.");
+			successful.showAndWait();
+		}
 
 		if (transporte.isSelected()) {
 			Double gastos = Double.parseDouble(gasto);
 			Double ganancias = Double.parseDouble(tf.getText());
 			Transport add = new Transport(name, id, date, gastos, ganancias);
 
-			en.addEnterprise(add, country);
+			try {
+				en.addEnterprise(add, c.getName());
 
-			Alert successful = new Alert(AlertType.INFORMATION);
-			successful.setTitle("Registro exitoso");
-			successful.setHeaderText(null);
-			successful.setContentText("Su empresa de tipo transporte ha sido agregada de forma exitosa");
+				Alert successful = new Alert(AlertType.INFORMATION);
+				successful.setTitle("Registro exitoso");
+				successful.setHeaderText(null);
+				successful.setContentText("Su empresa de tipo transporte ha sido agregada de forma exitosa");
 
-			successful.showAndWait();
+				successful.showAndWait();
+
+			} catch (RepeatedEnterpriseException e) {
+				Alert successful = new Alert(AlertType.ERROR);
+				successful.setTitle("ERROR EN REGISTRO");
+				successful.setHeaderText(null);
+				successful.setContentText("La empresa ya existe.");
+				successful.showAndWait();
+			}
+
 		} else if (cooperativa.isSelected()) {
 			Double gastos = Double.parseDouble(gasto);
 			Cooperative add = new Cooperative(name, id, date, gastos, tfCopera.getText(),
 					(Integer.parseInt(califi.getText())));
 
-			en.addEnterprise(add, country);
+			try {
+				en.addEnterprise(add, c.getName());
+				Alert successful = new Alert(AlertType.INFORMATION);
+				successful.setTitle("Registro exitoso");
+				successful.setHeaderText(null);
+				successful.setContentText("Su empresa de tipo cooperativa ha sido agregada de forma exitosa");
 
-			Alert successful = new Alert(AlertType.INFORMATION);
-			successful.setTitle("Registro exitoso");
-			successful.setHeaderText(null);
-			successful.setContentText("Su empresa de tipo cooperativa ha sido agregada de forma exitosa");
+				successful.showAndWait();
+			} catch (RepeatedEnterpriseException e) {
+				Alert successful = new Alert(AlertType.ERROR);
+				successful.setTitle("ERROR EN REGISTRO");
+				successful.setHeaderText(null);
+				successful.setContentText("La empresa ya existe.");
+				successful.showAndWait();
+			}
 
-			successful.showAndWait();
 		} else if (supermercados.isSelected()) {
 			Double gastos = Double.parseDouble(gasto);
 			SupermarketChain add = new SupermarketChain(name, id, date, gastos, Double.parseDouble(ganancias.getText()),
 					dueño.getText(), (Integer.parseInt(calificacion.getText())), Integer.parseInt(cantidad.getText()));
 
-			en.addEnterprise(add, country);
+			try {
+				en.addEnterprise(add, c.getName());
+				Alert successful = new Alert(AlertType.INFORMATION);
+				successful.setTitle("Registro exitoso");
+				successful.setHeaderText(null);
+				successful.setContentText("Su cadena de supermercados ha sido agregada de forma exitosa");
 
-			Alert successful = new Alert(AlertType.INFORMATION);
-			successful.setTitle("Registro exitoso");
-			successful.setHeaderText(null);
-			successful.setContentText("Su empresa de tipo cadena de supermercado ha sido agregada de forma exitosa");
+				successful.showAndWait();
+			} catch (RepeatedEnterpriseException e) {
+				Alert successful = new Alert(AlertType.ERROR);
+				successful.setTitle("ERROR EN REGISTRO");
+				successful.setHeaderText(null);
+				successful.setContentText("La empresa ya existe.");
+				successful.showAndWait();
+			}
 
-			successful.showAndWait();
 		} else if (educacion.isSelected()) {
-			Double gastos = Double.parseDouble(gasto);
-			String type = "";
-			String rector = "";
-			Education add = new Education(name, id, date, gastos, type, rector);
+			Double gastos = Double.parseDouble(gastosEdu.getText());
+			String type = typeEdu.getText();
+			String recto = rector.getText();
+			Education add = new Education(name, id, date, gastos, type, recto);
 
-			en.addEnterprise(add, country);
+			try {
+				en.addEnterprise(add, c.getName());
 
-			Alert successful = new Alert(AlertType.INFORMATION);
-			successful.setTitle("Registro exitoso");
-			successful.setHeaderText(null);
-			successful.setContentText("Su empresa de tipo eduación ha sido agregada de forma exitosa");
+				Alert successful = new Alert(AlertType.INFORMATION);
+				successful.setTitle("Registro exitoso");
+				successful.setHeaderText(null);
+				successful.setContentText("Su empresa de tipo eduación ha sido agregada de forma exitosa");
 
-			successful.showAndWait();
+				successful.showAndWait();
+			} catch (RepeatedEnterpriseException e) {
+				Alert successful = new Alert(AlertType.ERROR);
+				successful.setTitle("ERROR EN REGISTRO");
+				successful.setHeaderText(null);
+				successful.setContentText("La empresa ya existe.");
+				successful.showAndWait();
+			}
+
 		} else if (financiera.isSelected()) {
 			Double gastos = Double.parseDouble(gasto);
 			double earnings = 0.0;
@@ -610,16 +730,23 @@ public class PIBController {
 			boolean permission = true;
 			Financial add = new Financial(name, id, date, gastos, earnings, interestRate, permission);
 
-			en.addEnterprise(add, country);
+			try {
+				en.addEnterprise(add, c.getName());
+				Alert successful = new Alert(AlertType.INFORMATION);
+				successful.setTitle("Registro exitoso");
+				successful.setHeaderText(null);
+				successful.setContentText("Su empresa de tipo financiera ha sido agregada de forma exitosa");
 
-			Alert successful = new Alert(AlertType.INFORMATION);
-			successful.setTitle("Registro exitoso");
-			successful.setHeaderText(null);
-			successful.setContentText("Su empresa de tipo financiera ha sido agregada de forma exitosa");
+				successful.showAndWait();
+			} catch (RepeatedEnterpriseException e) {
+				Alert successful = new Alert(AlertType.ERROR);
+				successful.setTitle("ERROR EN REGISTRO");
+				successful.setHeaderText(null);
+				successful.setContentText("La empresa ya existe.");
+				successful.showAndWait();
+			}
 
-			successful.showAndWait();
 		}
-
 		if (tipo.getSelectedToggle() == null || nombreEmpresa.getText().equals("") || idEmpresa.getText().equals("")
 				|| fechaCreacion.getText().equals("") || gastosEmpresa.getText().equals("")) {
 
@@ -657,7 +784,7 @@ public class PIBController {
 	// agregar pais
 	// ------------------------------
 	@FXML
-	public void addCountry() throws SameNameCountryException, SamePresidentsNameException, IOException {
+	public void addCountry() throws IOException {
 
 		if (namePais.getText().equals("") || habitantes.getText().equals("") || extension.getText().equals("")
 				|| presidente.getText().equals("") || gastosPublicos.getText().equals("")) {
@@ -682,13 +809,29 @@ public class PIBController {
 				m = mar.getText();
 			}
 			Country added = new Country(name, habi, exte, presi, gastosPu, m);
-			en.addCountry(added);
+			try {
+				en.addCountry(added);
 
-			Alert successful = new Alert(AlertType.INFORMATION);
-			successful.setTitle("Registro exitoso");
-			successful.setHeaderText(null);
-			successful.setContentText("El país ha sido agregada de forma exitosa");
-			successful.showAndWait();
+				Alert successful = new Alert(AlertType.INFORMATION);
+				successful.setTitle("Registro exitoso");
+				successful.setHeaderText(null);
+				successful.setContentText("El país ha sido agregada de forma exitosa");
+				successful.showAndWait();
+			} catch (SameNameCountryException e) {
+
+				Alert successful = new Alert(AlertType.ERROR);
+				successful.setTitle("ERROR EN REGISTRO");
+				successful.setHeaderText(null);
+				successful.setContentText("El nombre del país ya existe.");
+				successful.showAndWait();
+
+			} catch (SamePresidentsNameException e) {
+				Alert successful = new Alert(AlertType.ERROR);
+				successful.setTitle("ERROR EN REGISTRO");
+				successful.setHeaderText(null);
+				successful.setContentText("La nombre del presidente ya está asiganado/n" + "a otro país.");
+				successful.showAndWait();
+			}
 
 			// re cargar la interfaz
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AgregarPais.fxml"));
@@ -717,36 +860,77 @@ public class PIBController {
 
 			error.showAndWait();
 		} else {
+
+			Country co = en.searchCountry(paisCiudadano.getText());
+			if (co == null) {
+				Alert successful = new Alert(AlertType.WARNING);
+				successful.setTitle("ERROR EN REGISTRO");
+				successful.setHeaderText(null);
+				successful.setContentText("EL PAÍS NO EXISTE.");
+				successful.showAndWait();
+			}
 			if (adulto.isSelected()) {
 
 				String adu = licor.getText();
 				Double adul = Double.parseDouble(adu);
 				Adult a = new Adult(nombreCiudadano.getText(), idCiudadano.getText(),
 						Double.parseDouble(gastosCiudadanos.getText()), adul);
-				en.addCitizen(a, paisCiudadano.getText());
+				try {
+					en.addCitizen(a, co.getName());
+					Alert successful = new Alert(AlertType.INFORMATION);
+					successful.setTitle("Registro exitoso");
+					successful.setHeaderText(null);
+					successful.setContentText("Su ciudadano adulto ha sido registrado de forma exitosa");
+					successful.showAndWait();
+				} catch (RepeatedCitizenException e) {
+					Alert successful = new Alert(AlertType.ERROR);
+					successful.setTitle("ERROR EN REGISTRO");
+					successful.setHeaderText(null);
+					successful.setContentText("El ciudadano ya existe.");
+					successful.showAndWait();
+				}
 
-				Alert successful = new Alert(AlertType.INFORMATION);
-				successful.setTitle("Registro exitoso");
-				successful.setHeaderText(null);
-				successful.setContentText("Su ciudadano adulto ha sido registrado de forma exitosa");
-
-				successful.showAndWait();
 			} else if (niño.isSelected()) {
 
 				String nino = extraEducacion.getText();
 				Double ninio = Double.parseDouble(nino);
 				Child c = new Child(nombreCiudadano.getText(), idCiudadano.getText(),
 						Double.parseDouble(gastosCiudadanos.getText()), true, ninio);
-				en.addCitizen(c, paisCiudadano.getText());
-				Alert successful = new Alert(AlertType.INFORMATION);
-				successful.setTitle("Registro exitoso");
-				successful.setHeaderText(null);
-				successful.setContentText("Su ciudadano niño ha sido registrado de forma exitosa");
+				try {
+					en.addCitizen(c, co.getName());
+
+					Alert successful = new Alert(AlertType.INFORMATION);
+					successful.setTitle("Registro exitoso");
+					successful.setHeaderText(null);
+					successful.setContentText("Su ciudadano niño ha sido registrado de forma exitosa");
+					successful.showAndWait();
+				} catch (RepeatedCitizenException e) {
+					Alert successful = new Alert(AlertType.ERROR);
+					successful.setTitle("ERROR EN REGISTRO");
+					successful.setHeaderText(null);
+					successful.setContentText("El ciudadano ya existe.");
+					successful.showAndWait();
+				}
+
 			} else if (mascota.isSelected()) {
 
 				Pet p = new Pet(nombreCiudadano.getText(), idCiudadano.getText(),
 						Double.parseDouble(gastosCiudadanos.getText()), true, "");
-				en.addCitizen(p, paisCiudadano.getText());
+				try {
+					en.addCitizen(p, co.getName());
+
+					Alert successful = new Alert(AlertType.INFORMATION);
+					successful.setTitle("Registro exitoso");
+					successful.setHeaderText(null);
+					successful.setContentText("Su mascota ha sido registrada de forma exitosa");
+					successful.showAndWait();
+				} catch (RepeatedCitizenException e) {
+					Alert successful = new Alert(AlertType.ERROR);
+					successful.setTitle("ERROR EN REGISTRO");
+					successful.setHeaderText(null);
+					successful.setContentText("El ciudadano ya existe.");
+					successful.showAndWait();
+				}
 			}
 
 		}

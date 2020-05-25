@@ -81,7 +81,7 @@ public class Country implements Serializable{
 		return rootCitizen;
 	}
 
-	public void setRootClient(Citizen rootCitizen) {
+	public void setRootCitizen(Citizen rootCitizen) {
 		this.rootCitizen = rootCitizen;
 	}
 
@@ -119,7 +119,7 @@ public class Country implements Serializable{
 
 	public void addCitizen(Citizen a) throws RepeatedCitizenException {
 		if (rootCitizen == null) {
-			setRootClient(a);
+			setRootCitizen(a);
 		} else {
 			rootCitizen.addCitizen(a);
 		}
@@ -185,6 +185,10 @@ public class Country implements Serializable{
 	public void loadCitizen() throws IOException, ClassNotFoundException, RepeatedCitizenException {
 		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data/citizens.fiat"));
 		addCitizen((Citizen) ois.readObject());
+	}
+
+	public Enterprise searchEnterprise(String enterprise) {
+		return firstEnterprise == null ? null : firstEnterprise.searchEnterprise(enterprise);
 	}
 
 }
