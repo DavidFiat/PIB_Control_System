@@ -251,9 +251,17 @@ public class Software {
 		Country a = null;
 		boolean found = false;
 		for (int i = 0; !found && i < countries.size(); i++) {
+<<<<<<< HEAD
 			if (country.equalsIgnoreCase(countries.get(i).getName())) {
 				a = countries.get(i);
 				found = true;
+=======
+			if (country.equals(countries.get(i).getName())) {
+
+				a = countries.get(i);
+				found = true;
+
+>>>>>>> a2a82e9c3aac688903205b6edd06aadd81bd8976
 			}
 		}
 		return a;
