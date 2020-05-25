@@ -1,7 +1,6 @@
-/model/
-/exceptions/
-/controller/
 /customExceptions/
-/ui/
 /images/
+/model/
 /threads/
+/ui/
+/controller/

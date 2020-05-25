@@ -210,37 +210,65 @@ public class Software {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	public void loadCountries() throws IOException, ClassNotFoundException, SameNameCountryException {
 		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data/enterprises.fiat"));
 		countries = (ArrayList<Country>) ois.readObject();
 		ois.close();
 	}
 
-	public void addCitizen(Citizen a, String country) {
-		for (int i = 0; i < countries.size(); i++) {
-			if (country.equals(countries.get(i).getName())) {
-				try {
-					countries.get(i).addCitizen(a);
-				} catch (RepeatedCitizenException e) {
-					e.printStackTrace();
-				}
-			}
+	public void addCitizen(Citizen a, String country) throws RepeatedCitizenException {
+		Country c = searchCountry(country);
+		if (c != null) {
+			c.addCitizen(a);
 		}
 
 	}
 
-	public void addEnterprise(Enterprise a, String country) {
-		for (int i = 0; i < countries.size(); i++) {
-			if (country.equals(countries.get(i).getName())) {
-				try {
-					countries.get(i).addEnterprise(a);
-				} catch (RepeatedEnterpriseException e) {
-					e.printStackTrace();
-				}
-			}
+	public void addEnterprise(Enterprise a, String country) throws RepeatedEnterpriseException {
+
+		Country c = searchCountry(country);
+		if (c != null) {
+			c.addEnterprise(a);
 		}
 
+	}
+
+	public void addEmployee(Employee e, String enterprise, String country) throws RepeatedEmployeeException {
+		Enterprise en = searchEnterprise(country, enterprise);
+		if (en != null) {
+			en.addEmployee(e);
+		}
+	}
+	
+	public void addVehicle(Vehicle v, String enterprise, String country) throws RepeatedVehicleException {
+		Transport en=(Transport) searchEnterprise(country, enterprise);
+		if(en!=null) {
+			en.addVehicle(v);
+		}
+	}
+
+	public Country searchCountry(String country) {
+		Country a = null;
+		boolean found = false;
+		for (int i = 0; !found && i < countries.size(); i++) {
+			if (country.equals(countries.get(i).getName())) {
+
+				a = countries.get(i);
+				found = true;
+
+			}
+		}
+		return a;
+
+	}
+
+	public Enterprise searchEnterprise(String country, String enterprise) {
+		Country c = searchCountry(country);
+		Enterprise e = null;
+		if (c != null) {
+			e = c.searchEnterprise(enterprise);
+		}
+		return e;
 	}
 
 }

@@ -198,4 +198,15 @@ public abstract class Enterprise implements Imports, Exports, Serializable {
 		bw.close();
 	}
 
+	public Enterprise searchEnterprise(String enterprise) {
+		if (this.name.compareTo(enterprise) == 0) {
+			return this;
+		} else {
+			return (next == null) ? null : next.searchEnterprise(enterprise);
+
+		}
+	}
+
+
+
 }
