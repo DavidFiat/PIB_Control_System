@@ -2,11 +2,12 @@ package model;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import customExceptions.*;
 
-public class Vehicle {
+public class Vehicle implements Serializable{
 
 	public static final int LAND_VEHICLE = 1;
 	public static final int AIR_VEHICLE = 2;

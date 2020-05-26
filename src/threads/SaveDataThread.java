@@ -22,7 +22,7 @@ public class SaveDataThread extends Thread {
 				e.printStackTrace();
 			}
 			try {
-				sleep(300000);
+				sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

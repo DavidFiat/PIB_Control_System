@@ -9,7 +9,6 @@ import customExceptions.*;
 import threads.VehicleDataThread;
 
 public class Transport extends ForProfitEnterprise {
-	private BufferedWriter bw;
 	private Vehicle rootVehicle;
 
 	public Transport(String name, String iD, String creationDate, double spending, double earnings) throws IOException {
@@ -19,7 +18,8 @@ public class Transport extends ForProfitEnterprise {
 	}
 
 	public void vehicleData() throws IOException {
-		bw = new BufferedWriter(new FileWriter("data/transportEnterprise's_Data/" + name + "'s vehicles" + ".csv"));
+		BufferedWriter bw = new BufferedWriter(
+				new FileWriter("data/transportEnterprise's_Data/" + name + "'s vehicles" + ".csv"));
 		bw.write("type" + ";" + "Brand" + ";" + "ID" + ";" + "\n");
 
 		if (rootVehicle != null) {

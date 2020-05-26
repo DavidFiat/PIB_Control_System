@@ -22,7 +22,6 @@ public class Country implements Serializable {
 	private String sea;
 	private Citizen rootCitizen;
 	private Enterprise firstEnterprise;
-	private BufferedWriter bw;
 
 	public Country(String name, int population, double extension, String president, double publicSpending, String sea)
 			throws IOException {
@@ -47,7 +46,7 @@ public class Country implements Serializable {
 	}
 
 	public void citizenData() throws IOException {
-		bw = new BufferedWriter(new FileWriter("data/country's_Data/" + name + "'s Citizens" + ".csv"));
+		BufferedWriter bw = new BufferedWriter(new FileWriter("data/country's_Data/" + name + "'s Citizens" + ".csv"));
 		bw.write("name" + ";" + "ID" + ";" + "Spending" + ";" + "Other Information" + ";" + "\n");
 
 		if (rootCitizen != null) {
