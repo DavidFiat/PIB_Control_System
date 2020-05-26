@@ -52,7 +52,6 @@ public class PIBController {
 	private Software en;
 
 	public PIBController() throws FileNotFoundException, IOException, ClassNotFoundException {
-		saveData();
 		loadData();
 		SaveDataThread sdt = new SaveDataThread(this);
 		sdt.start();
