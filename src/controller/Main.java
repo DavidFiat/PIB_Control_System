@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+
 public class Main extends Application{
 
 	private PIBController pib;
@@ -19,8 +20,7 @@ public class Main extends Application{
 	
 	public Main() throws FileNotFoundException, ClassNotFoundException, IOException {
 		pib = new PIBController();
-//		ThreadCircleOne tc = new ThreadCircleOne(pib);
-//		tc.start();
+		
 	}
 
 	@Override
@@ -34,6 +34,7 @@ public class Main extends Application{
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("PIB APP");
+		primaryStage.setResizable(false);
 		primaryStage.show();
 	}
 

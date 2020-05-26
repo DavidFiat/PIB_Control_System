@@ -19,7 +19,7 @@
       </Label>
       <ImageView fitHeight="232.0" fitWidth="252.0" layoutX="423.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../Downloads/WhatsApp%20Image%202020-04-20%20at%207.17.42%20PM.jpeg" />
+            <Image url="@../images/WhatsApp%20Image%202020-04-20%20at%207.17.42%20PM.jpeg" />
          </image>
       </ImageView>
       <Label layoutX="36.0" layoutY="107.0" text="Nombre:">

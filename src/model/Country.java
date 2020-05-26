@@ -38,21 +38,18 @@ public class Country implements Serializable {
 		}
 		InitThread();
 
-		citizenDataInit();
 	}
 
 	private void InitThread() {
 		CitizenDataThread cdt = new CitizenDataThread(this);
 		cdt.start();
-	}
-
-	private void citizenDataInit() throws IOException {
-		bw = new BufferedWriter(new FileWriter("data/" + name + "'s Citizens" + ".csv"));
-		bw.write("name" + ";" + "ID" + ";" + "Spending" + ";" + "Other Information" + ";" + "\n");
 
 	}
 
 	public void citizenData() throws IOException {
+		bw = new BufferedWriter(new FileWriter("data/country's_Data/" + name + "'s Citizens" + ".csv"));
+		bw.write("name" + ";" + "ID" + ";" + "Spending" + ";" + "Other Information" + ";" + "\n");
+
 		if (rootCitizen != null) {
 			rootCitizen.citizenData(bw);
 		}

@@ -44,6 +44,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.*;
+import threads.SaveDataThread;
 
 public class PIBController {
 
@@ -52,11 +53,10 @@ public class PIBController {
 
 	public PIBController() throws FileNotFoundException, IOException, ClassNotFoundException {
 		loadData();
-		//initialize();
+		SaveDataThread sdt = new SaveDataThread(this);
+		sdt.start();
 	}
-	public void initialize() {
-		circle = new Circle();
-	}
+
 	private void loadData() throws FileNotFoundException, IOException, ClassNotFoundException {
 
 		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data/data.fiat-arboleda"));
@@ -69,14 +69,7 @@ public class PIBController {
 
 	@FXML
 	private BorderPane mainScreen;
-	@FXML
-	private ImageView imageOne;
-	@FXML
-	private ImageView imageTwo;
-	@FXML
-	private Circle circle;
-	@FXML
-	private Circle circleTwo;
+
 	// ----------------
 	// agregar pais
 	// ----------------
@@ -137,7 +130,6 @@ public class PIBController {
 	private TextField typeEdu;
 	private TextField rector;
 	// venatana extra de financiera
-	private TextField gastosFinan;
 	private TextField gananciasFinan;
 	private TextField intereses;
 	private TextField permiso;
@@ -215,7 +207,6 @@ public class PIBController {
 	@FXML
 	private TextField resultadoPresidente;
 
-	@FXML
 	public void saveData() throws FileNotFoundException, IOException {
 		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data/data.fiat-arboleda"));
 		oos.writeObject(en);
@@ -234,13 +225,13 @@ public class PIBController {
 
 		licor = new TextField();
 		adultos();
-		
+
 		eduNiño = new TextField();
 		eduNiño.setPromptText("Privada/Publica");
 		extraEducacion = new TextField();
 		extraEducacion.setPromptText("Gastos en educacion");
 		niño();
-		
+
 		race = new TextField();
 		pedigree = new TextField();
 		pedigree.setPromptText("sí/no");
@@ -248,6 +239,7 @@ public class PIBController {
 
 		mainScreen.getChildren().clear();
 		mainScreen.setCenter(pib);
+
 	}
 
 	@FXML
@@ -298,7 +290,6 @@ public class PIBController {
 		rector = new TextField();
 		educacion();
 
-		gastosFinan = new TextField();
 		gananciasFinan = new TextField();
 		intereses = new TextField();
 		permiso = new TextField();
@@ -322,6 +313,7 @@ public class PIBController {
 		mainScreen.getChildren().clear();
 		mainScreen.setCenter(pib);
 	}
+
 	@FXML
 	public void darPibPresidente(ActionEvent event) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PIBPresidente.fxml"));
@@ -610,7 +602,7 @@ public class PIBController {
 
 		});
 		bt.setOnAction(e -> {
-			if (pedigree.getText().equals("") || race.getText().equals("")){
+			if (tfCopera.getText().equals("") || califi.getText().equals("")) {
 				Alert error = new Alert(AlertType.WARNING);
 				error.setTitle("Fallo en el registro");
 				error.setHeaderText("Alguno de los requerimientos está vacío");
@@ -805,7 +797,7 @@ public class PIBController {
 			bt.setLayoutX(167);
 			bt.setLayoutY(211);
 
-			p.getChildren().addAll(inf, intereses, inte, permiso, permi, bt);
+			p.getChildren().addAll(inf, gananciasFinan, ganan, intereses, inte, permiso, permi, bt);
 
 			Scene sc = new Scene(p, 450, 300);
 			s.setScene(sc);
@@ -813,8 +805,7 @@ public class PIBController {
 
 		});
 		bt.setOnAction(e -> {
-			if (gastosFinan.getText().equals("") || intereses.getText().equals("") || permiso.getText().equals("")
-					|| permiso.getText().equals("")) {
+			if (gananciasFinan.getText().equals("") || intereses.getText().equals("") || permiso.getText().equals("")) {
 				Alert error = new Alert(AlertType.WARNING);
 				error.setTitle("Fallo en el registro");
 				error.setHeaderText("Alguno de los requerimientos está vacío");
@@ -1065,8 +1056,9 @@ public class PIBController {
 
 	public void addPerson() throws IOException {
 
-		if (nombreCiudadano.getText().equals("") || idCiudadano.getText().equals("")|| paisCiudadano.getText().equals("") 
-				|| clasi.getSelectedToggle() == null || gastosCiudadanos.getText().equals("")) {
+		if (nombreCiudadano.getText().equals("") || idCiudadano.getText().equals("")
+				|| paisCiudadano.getText().equals("") || clasi.getSelectedToggle() == null
+				|| gastosCiudadanos.getText().equals("")) {
 
 			Alert error = new Alert(AlertType.WARNING);
 			error.setTitle("Fallo en el registro");
@@ -1109,10 +1101,10 @@ public class PIBController {
 
 					Double ninio = Double.parseDouble(extraEducacion.getText());
 					boolean ti = true;
-					if(eduNiño.getText().equals("no")) {
-						ti=false;
-					}else {
-						ti=true;
+					if (eduNiño.getText().equals("no")) {
+						ti = false;
+					} else {
+						ti = true;
 					}
 					Child c = new Child(nombreCiudadano.getText(), idCiudadano.getText(),
 							Double.parseDouble(gastosCiudadanos.getText()), ti, ninio);
@@ -1133,15 +1125,15 @@ public class PIBController {
 					}
 
 				} else if (mascota.isSelected()) {
-					
+
 					boolean pedi = true;
-					
-					if(pedigree.getText().equalsIgnoreCase("no")) {
+
+					if (pedigree.getText().equalsIgnoreCase("no")) {
 						pedi = false;
-					}else {
+					} else {
 						pedi = true;
 					}
-					
+
 					Pet p = new Pet(nombreCiudadano.getText(), idCiudadano.getText(),
 							Double.parseDouble(gastosCiudadanos.getText()), pedi, race.getText());
 					try {
@@ -1162,8 +1154,8 @@ public class PIBController {
 				}
 
 			}
-			
-			//recargar
+
+			// recargar
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AgregarCiudadano.fxml"));
 			fxmlLoader.setController(this);
 
@@ -1171,13 +1163,13 @@ public class PIBController {
 
 			licor = new TextField();
 			adultos();
-			
+
 			eduNiño = new TextField();
 			eduNiño.setPromptText("Privada/Publica");
 			extraEducacion = new TextField();
 			extraEducacion.setPromptText("Gastos en educacion");
 			niño();
-			
+
 			race = new TextField();
 			pedigree = new TextField();
 			pedigree.setPromptText("sí/no");
@@ -1276,7 +1268,7 @@ public class PIBController {
 
 		});
 		bt.setOnAction(e -> {
-			if (extraEducacion.getText().equals("") || eduNiño.getText().equals("")){
+			if (extraEducacion.getText().equals("") || eduNiño.getText().equals("")) {
 				Alert error = new Alert(AlertType.WARNING);
 				error.setTitle("Fallo en el registro");
 				error.setHeaderText("Alguno de los requerimientos está vacío");
@@ -1290,6 +1282,7 @@ public class PIBController {
 			}
 		});
 	}
+
 	@FXML
 	public void mascota() {
 
@@ -1331,7 +1324,7 @@ public class PIBController {
 
 		});
 		bt.setOnAction(e -> {
-			if (pedigree.getText().equals("") || race.getText().equals("")){
+			if (pedigree.getText().equals("") || race.getText().equals("")) {
 				Alert error = new Alert(AlertType.WARNING);
 				error.setTitle("Fallo en el registro");
 				error.setHeaderText("Alguno de los requerimientos está vacío");
@@ -1384,6 +1377,12 @@ public class PIBController {
 				Vehicle v = new Vehicle(ti, marc, idV);
 				try {
 					en.addVehicle(v, empresaVehi.getText(), paisVehi.getText());
+
+					Alert successful = new Alert(AlertType.INFORMATION);
+					successful.setTitle("Registro exitoso");
+					successful.setHeaderText(null);
+					successful.setContentText("Su vehículo ha sido registrado de forma exitosa");
+					successful.showAndWait();
 				} catch (RepeatedVehicleException e1) {
 					Alert error = new Alert(AlertType.WARNING);
 					error.setTitle("Fallo en el registro");
@@ -1397,40 +1396,74 @@ public class PIBController {
 	@FXML
 	public void pibPais() {
 		Country c = en.searchCountry(pibPais.getText());
-		if(c==null) {
+		if (c == null) {
 			Alert error = new Alert(AlertType.ERROR);
 			error.setTitle("ERROR EN REGISTRO");
 			error.setHeaderText(null);
 			error.setContentText("LA PAÍS NO EXISTE.");
 			error.showAndWait();
-		}else {
+		} else {
 			resultadoPais.setText(en.PIBName(pibPais.getText()) + "");
 		}
 	}
+
 	@FXML
 	public void pibPresident() {
 		Country p = en.binarySearchCountryByPresident(pibPresidente.getText());
-		if(p==null) {
+		if (p == null) {
 			Alert error = new Alert(AlertType.ERROR);
 			error.setTitle("ERROR EN REGISTRO");
 			error.setHeaderText(null);
 			error.setContentText("EL PRESIDENTE NO EXISTE.");
 			error.showAndWait();
-		}else {
-			resultadoPresidente.setText(en.PIBPresident(pibPresidente.getText())+"");
+		} else {
+			resultadoPresidente.setText(en.PIBPresident(pibPresidente.getText()) + "");
 		}
 	}
 
 	// animation
 
-//	public void moved(int x, boolean change) {
-//
+//	public void moved(int x) {
+//		
 //		Platform.runLater(new Runnable() {
+//			
 //			@Override
 //			public void run() {
-//				circle.setRadius(x);
+//				Scene s = new Scene(paneCirculos);
+//				Stage st = new Stage();
+//				st.setScene(s);
+//				try {
+//					ventana(st);
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				circle.setLayoutY(circle.getLayoutY() + x);
+//				circleTwo.setLayoutY(circle.getLayoutY() + x);
+//
+//				
 //			}
 //		});
 //	}
-
+////	public void moved(int one) {
+////		Platform.runLater(new Runnable() {
+////			@Override
+////			public void run() {
+////				circleTwo.setRadius(one);
+////			}
+////		});
+////	}
+//	public void ventana(Stage primaryStage) throws IOException {
+//		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WindowMain.fxml"));
+//
+//		fxmlLoader.setController(this);
+//		
+//		Parent root = fxmlLoader.load();
+//		
+//		Scene scene = new Scene(root);
+//		primaryStage.setScene(scene);
+//		primaryStage.setTitle("PIB APP");
+//		primaryStage.show();
+//
+//	}
 }

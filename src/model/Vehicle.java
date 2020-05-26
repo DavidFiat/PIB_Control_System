@@ -1,5 +1,7 @@
 package model;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import customExceptions.*;
@@ -86,7 +88,7 @@ public class Vehicle {
 		}
 
 	}
-	
+
 	public void inorden(ArrayList<Vehicle> acum) {
 		if (left != null)
 			left.inorden(acum);
@@ -96,6 +98,23 @@ public class Vehicle {
 		if (right != null)
 			right.inorden(acum);
 
+	}
+
+	public void citizenData(BufferedWriter bw) throws IOException {
+		if (left != null) {
+			left.citizenData(bw);
+		}
+		bw.write(this.toString());
+		bw.write(";" + "\n");
+		if (right != null) {
+			right.citizenData(bw);
+		}
+		bw.flush();
+	}
+
+	@Override
+	public String toString() {
+		return type + ";" + brand + ";" + ID;
 	}
 
 }

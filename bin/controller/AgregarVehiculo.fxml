@@ -35,10 +35,10 @@
       <TextField fx:id="idVehiculo" layoutX="202.0" layoutY="181.0" prefHeight="0.0" prefWidth="132.0" />
       <ImageView fitHeight="163.0" fitWidth="200.0" layoutX="378.0" layoutY="86.0">
          <image>
-            <Image url="@../../../../Downloads/WhatsApp%20Image%202020-04-20%20at%207.20.11%20PM.jpeg" />
+            <Image url="@../images/WhatsApp%20Image%202020-04-20%20at%207.20.11%20PM.jpeg" />
          </image>
       </ImageView>
-      <Button layoutX="234.0" layoutY="300.0" mnemonicParsing="false" text="¡LISTO!">
+      <Button layoutX="234.0" layoutY="300.0" mnemonicParsing="false" onAction="#addVehi" text="¡LISTO!">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>

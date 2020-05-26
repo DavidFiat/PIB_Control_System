@@ -56,7 +56,7 @@
       <RadioButton fx:id="educacion" layoutX="262.0" layoutY="295.0" mnemonicParsing="false" text="Educación" toggleGroup="$tipo" />
       <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="463.0" layoutY="195.0">
          <image>
-            <Image url="@../../../../Downloads/WhatsApp%20Image%202020-04-20%20at%207.22.09%20PM.jpeg" />
+            <Image url="@../images/WhatsApp%20Image%202020-04-20%20at%207.22.09%20PM.jpeg" />
          </image>
       </ImageView>
       <RadioButton fx:id="cooperativa" layoutX="77.0" layoutY="313.0" mnemonicParsing="false" text="Cooperativa" toggleGroup="$tipo" />

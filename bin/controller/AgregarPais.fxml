@@ -46,7 +46,7 @@
       </Label>
       <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="442.0" layoutY="89.0">
          <image>
-            <Image url="@../../../../Downloads/WhatsApp%20Image%202020-04-20%20at%207.16.55%20PM.jpeg" />
+            <Image url="@../images/WhatsApp%20Image%202020-04-20%20at%207.16.55%20PM.jpeg" />
          </image>
       </ImageView>
       <TextField fx:id="mar" layoutX="36.0" layoutY="311.0" prefHeight="26.0" prefWidth="188.0" />
