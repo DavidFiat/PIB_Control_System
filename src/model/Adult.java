@@ -18,7 +18,28 @@ public class Adult extends Citizen {
 
 	@Override
 	public double calculateTotalSpending() {
-		return getSpending()+getLiquorSpending();
+		return getSpending() + getLiquorSpending();
 	}
 
+	@Override
+	public String toString() {
+		return getName() + ";" + getID() + ";" + getSpending() + ";" + liquorSpending;
+
+	}
+
+	@Override
+	public double allCitizensTotalCost() {
+		double allCitizensTotalCost = 0;
+		if (getLeft() != null) {
+			getLeft().allCitizensTotalCost();
+		}
+		allCitizensTotalCost += calculateTotalSpending();
+
+		if (getRight() != null) {
+			getRight().allCitizensTotalCost();
+		}
+
+		return allCitizensTotalCost;
+
+	}
 }

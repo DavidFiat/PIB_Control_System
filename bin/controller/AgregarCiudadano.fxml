@@ -42,11 +42,11 @@
       <TextField fx:id="paisCiudadano" layoutX="136.0" layoutY="181.0" prefHeight="0.0" prefWidth="132.0" />
       <RadioButton fx:id="adulto" layoutX="36.0" layoutY="292.0" mnemonicParsing="false" text="Adulto">
          <toggleGroup>
-            <ToggleGroup fx:id="clasifi" />
+            <ToggleGroup fx:id="clasi" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton fx:id="niño" layoutX="123.0" layoutY="292.0" mnemonicParsing="false" text="Niño" toggleGroup="$clasifi" />
-      <RadioButton fx:id="mascota" layoutX="202.0" layoutY="292.0" mnemonicParsing="false" text="Mascota" toggleGroup="$clasifi" />
+      <RadioButton fx:id="niño" layoutX="123.0" layoutY="292.0" mnemonicParsing="false" text="Niño" toggleGroup="$clasi" />
+      <RadioButton fx:id="mascota" layoutX="202.0" layoutY="292.0" mnemonicParsing="false" text="Mascota" toggleGroup="$clasi" />
       <Label layoutX="36.0" layoutY="251.0" text="Esta usted registrando a:">
          <font>
             <Font name="System Bold" size="14.0" />

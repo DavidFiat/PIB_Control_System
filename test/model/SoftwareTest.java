@@ -2,13 +2,16 @@ package model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import org.junit.jupiter.api.Test;
 
 class SoftwareTest {
 	private Software software;
 
 	@Test
-	public void setupSoftwareStage() {
+	public void setupSoftwareStage() throws IOException {
 		software = new Software();
 
 		Country a = new Country("Colombia", 123, 456.78, "Uribe", 56, "Pacifico");
@@ -21,7 +24,7 @@ class SoftwareTest {
 	}
 
 	@Test
-	public void testSortCountriesByName() {
+	public void testSortCountriesByName() throws IOException {
 		setupSoftwareStage();
 		software.sortCountriesByName();
 		for (int i = 0; i < software.getCountries().size() - 1; i++) {
@@ -30,7 +33,7 @@ class SoftwareTest {
 	}
 
 	@Test
-	public void testSortCountriesByPopulation() {
+	public void testSortCountriesByPopulation() throws IOException {
 		setupSoftwareStage();
 		software.sortCountriesByPopulation();
 		for (int i = 0; i < software.getCountries().size() - 1; i++) {
@@ -39,7 +42,7 @@ class SoftwareTest {
 	}
 
 	@Test
-	public void testSortCountriesByExtension() {
+	public void testSortCountriesByExtension() throws IOException {
 		setupSoftwareStage();
 		software.sortCountriesByExtension();
 		for (int i = 0; i < software.getCountries().size() - 1; i++) {
@@ -48,7 +51,7 @@ class SoftwareTest {
 	}
 
 	@Test
-	public void testSortCountriesByPresident() {
+	public void testSortCountriesByPresident() throws IOException {
 		setupSoftwareStage();
 		software.sortCountriesByPresident();
 		for (int i = 0; i < software.getCountries().size() - 1; i++) {
@@ -57,7 +60,7 @@ class SoftwareTest {
 	}
 
 	@Test
-	public void testSortCountriesByPublicSpending() {
+	public void testSortCountriesByPublicSpending() throws IOException {
 		setupSoftwareStage();
 		software.sortCountriesByPublicSpending();
 		for (int i = 0; i < software.getCountries().size() - 1; i++) {
@@ -66,7 +69,7 @@ class SoftwareTest {
 	}
 
 	@Test
-	public void testSortCountriesBySea() {
+	public void testSortCountriesBySea() throws IOException {
 		setupSoftwareStage();
 		software.sortCountriesBySea();
 		for (int i = 0; i < software.getCountries().size() - 1; i++) {
@@ -75,10 +78,10 @@ class SoftwareTest {
 	}
 
 	@Test
-	public void testBinarySearchCountryByName() {
+	public void testBinarySearchCountryByName() throws IOException {
 		setupSoftwareStage();
 		software.sortCountriesByName();
-		Country z = software.binarySearchCountryByName("Colombia");
+		Country z = software.searchCountry("Colombia");
 		assertTrue(z == software.getCountries().get(0));
 		assertTrue(z.getName().equalsIgnoreCase("colombia"));
 		// .equals(new Country("Colombia", 123, 456.78, "Duque", 56, "Pacifico")));
@@ -86,7 +89,7 @@ class SoftwareTest {
 	}
 
 	@Test
-	public void testBinarySearchCountryByPresident() {
+	public void testBinarySearchCountryByPresident() throws IOException {
 		setupSoftwareStage();
 		software.sortCountriesByPresident();
 

@@ -2,6 +2,12 @@ package model;
 
 public class Pet extends Citizen {
 
+	@Override
+	public String toString() {
+		return getName() + ";" + getID() + ";" + getSpending() + ";" + race;
+
+	}
+
 	public static final double PET_BASE_SUPPORT = 500;
 	private boolean pedigree;
 	private String race;
@@ -41,6 +47,22 @@ public class Pet extends Citizen {
 	@Override
 	public double calculateTotalSpending() {
 		return isPedigree() == true ? (getPetExpense() * 2) + getSpending() : getPetExpense() + getSpending();
+	}
+	
+	@Override
+	public double allCitizensTotalCost() {
+		double allCitizensTotalCost = 0;
+		if (getLeft() != null) {
+			getLeft().allCitizensTotalCost();
+		}
+		allCitizensTotalCost += calculateTotalSpending();
+
+		if (getRight() != null) {
+			getRight().allCitizensTotalCost();
+		}
+
+		return allCitizensTotalCost;
+
 	}
 
 }

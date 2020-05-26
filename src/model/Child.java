@@ -32,4 +32,24 @@ public class Child extends Citizen {
 		return isPrivateEducation()==true?getEducationExpense()+getSpending():getSpending();
 	}
 
+	@Override
+	public String toString() {
+		return getName() + ";" + getID() + ";" + getSpending() + ";" + educationExpense;
+
+	}
+	@Override
+	public double allCitizensTotalCost() {
+		double allCitizensTotalCost = 0;
+		if (getLeft() != null) {
+			getLeft().allCitizensTotalCost();
+		}
+		allCitizensTotalCost += calculateTotalSpending();
+
+		if (getRight() != null) {
+			getRight().allCitizensTotalCost();
+		}
+
+		return allCitizensTotalCost;
+
+	}
 }

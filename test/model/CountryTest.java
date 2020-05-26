@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
+
 import org.junit.jupiter.api.Test;
 
 import customExceptions.*;
@@ -11,12 +13,12 @@ class CountryTest {
 	private Country country;
 
 	@Test
-	private void setupStage() {
+	private void setupStage() throws IOException {
 		country = new Country("Perú", 3234555, 2463563, "Fiat", 683466, "Pacifico");
 	}
 
 	@Test
-	private void addEnterpriseTest() {
+	private void addEnterpriseTest() throws IOException {
 		setupStage();
 		Enterprise a1 = new Transport("Confenalco", "535336", "22/11/1980", 65435.76, 54678);
 		Enterprise a = new Education("Icesi", "5675", "22/05/1990", 56993, "University", "Piedrahita");
@@ -51,7 +53,7 @@ class CountryTest {
 	}
 
 	@Test
-	public void addCitizenTest() {
+	public void addCitizenTest() throws IOException {
 		setupStage();
 		Citizen c = new Pet("Pepe", "3456", 5678, true, "Labrador");
 		Citizen t = new Adult("Daniel", "64643456", 5678, 35);
@@ -88,7 +90,7 @@ class CountryTest {
 	}
 
 	@Test
-	public void searchCitizenTest() {
+	public void searchCitizenTest() throws IOException {
 		setupStage();
 		addCitizenTest();
 

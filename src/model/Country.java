@@ -1,16 +1,19 @@
 package model;
 
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import customExceptions.*;
+import threads.CitizenDataThread;
 
-public class Country implements Serializable{
+public class Country implements Serializable {
 	private String name;
 	private int population;
 	private double extension;
@@ -19,14 +22,41 @@ public class Country implements Serializable{
 	private String sea;
 	private Citizen rootCitizen;
 	private Enterprise firstEnterprise;
+	private BufferedWriter bw;
 
-	public Country(String name, int population, double extension, String president, double publicSpending, String sea) {
+	public Country(String name, int population, double extension, String president, double publicSpending, String sea)
+			throws IOException {
 		this.name = name;
 		this.population = population;
 		this.extension = extension;
 		this.president = president;
 		this.publicSpending = publicSpending;
-		this.sea = sea;
+		if (sea.equals("")) {
+			this.sea = "NINGUNO";
+		} else {
+			this.sea = sea;
+		}
+		InitThread();
+
+		citizenDataInit();
+	}
+
+	private void InitThread() {
+		CitizenDataThread cdt = new CitizenDataThread(this);
+		cdt.start();
+	}
+
+	private void citizenDataInit() throws IOException {
+		bw = new BufferedWriter(new FileWriter("data/" + name + "'s Citizens" + ".csv"));
+		bw.write("name" + ";" + "ID" + ";" + "Spending" + ";" + "Other Information" + ";" + "\n");
+
+	}
+
+	public void citizenData() throws IOException {
+		if (rootCitizen != null) {
+			rootCitizen.citizenData(bw);
+		}
+
 	}
 
 	public String getName() {
@@ -156,35 +186,6 @@ public class Country implements Serializable{
 	public String toString() {
 		return "Country [name=" + name + ", population=" + population + ", extension=" + extension + ", president="
 				+ president + ", publicSpending=" + publicSpending + ", sea=" + sea + "]";
-	}
-
-	public void saveEnterprises() throws IOException {
-		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data/enterprises.fiat"));
-		if (firstEnterprise != null) {
-			Enterprise nex = firstEnterprise;
-			while (nex != null) {
-				oos.writeObject(nex);
-			}
-		}
-		oos.close();
-	}
-	public void loadEnterprises() throws IOException, ClassNotFoundException, RepeatedEnterpriseException {
-		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data/enterprises.fiat"));
-		addEnterprise((Enterprise) ois.readObject());
-
-	}
-	public void saveCitizen() throws IOException {
-		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data/citizens.fiat"));
-		if (rootCitizen != null) {
-			rootCitizen.saveCitizen(oos);
-			oos.writeObject(rootCitizen);
-		}
-		oos.close();
-
-	}
-	public void loadCitizen() throws IOException, ClassNotFoundException, RepeatedCitizenException {
-		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data/citizens.fiat"));
-		addCitizen((Citizen) ois.readObject());
 	}
 
 	public Enterprise searchEnterprise(String enterprise) {

@@ -1,5 +1,6 @@
 package model;
 
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -88,6 +89,12 @@ public abstract class Citizen implements Spending, Serializable {
 
 	}
 
+	@Override
+	public String toString() {
+		return "Citizen [name=" + name + ", ID=" + ID + ", spending=" + spending + ", left=" + left + ", right=" + right
+				+ "]";
+	}
+
 	public Citizen search(String ID) {
 		if (this.ID.compareTo(ID) == 0) {
 			return this;
@@ -101,23 +108,24 @@ public abstract class Citizen implements Spending, Serializable {
 
 	}
 
-	public double allCitizensTotalCost() {
-		double allCitizensTotalCost = 0;
-		allCitizensTotalCost += left == null ? 0.0 : left.allCitizensTotalCost();
-		allCitizensTotalCost += right == null ? 0.0 : right.allCitizensTotalCost();
-		return allCitizensTotalCost;
+
+
+	public void citizenData(BufferedWriter bw) throws IOException {
+
+		if (left != null) {
+			left.citizenData(bw);
+		}
+		bw.write(this.toString());
+		bw.write(";" + "\n");
+		if (right != null) {
+			right.citizenData(bw);
+		}
+		bw.flush();
 	}
 
-	public void saveCitizen(ObjectOutputStream oos) throws IOException {
-		if (left != null) {
-			left.saveCitizen(oos);
-			oos.writeObject(left);
-		} else if (right != null) {
-			right.saveCitizen(oos);
-			oos.writeObject(right);
-		}
-		oos.close();
-
+	public double allCitizensTotalCost() {
+		return spending;
+		
 	}
 
 }

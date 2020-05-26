@@ -6,7 +6,9 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="472.0" prefWidth="694.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -18,6 +20,7 @@
                   <MenuItem mnemonicParsing="false" onAction="#loadSortExtension" text="Por extensión" />
                   <MenuItem mnemonicParsing="false" onAction="#loadSortPopulation" text="Por habitantes" />
                   <MenuItem mnemonicParsing="false" onAction="#loadSortPresident" text="Por presidente" />
+                  <MenuItem mnemonicParsing="false" onAction="#loadSortSea" text="Por mar" />
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Añadir ↓ ">
@@ -26,6 +29,17 @@
                   <MenuItem mnemonicParsing="false" onAction="#loadAddCiudadno" text="Añadir Ciudadano" />
                   <MenuItem mnemonicParsing="false" onAction="#loadAddVehiculo" text="Añadir Vehículo" />
                   <MenuItem mnemonicParsing="false" onAction="#loadAddEmpresa" text="Añadir Empresa" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Dar PIB ↓">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#darPibPais" text="Nombre país" />
+                  <MenuItem mnemonicParsing="false" onAction="#darPibPresidente" text="Nombre presidente" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Guardar ↓">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#saveData" text="Guardar" />
               </items>
             </Menu>
         </menus>
@@ -44,6 +58,14 @@
                   <Image url="@../images/WhatsApp%20Image%202020-05-18%20at%204.45.54%20PM.jpeg" />
                </image>
             </ImageView>
-         </left></BorderPane>
+         </left>
+         <center>
+            <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Circle fx:id="circle" fill="#ff1f1f" layoutX="54.0" layoutY="103.0" radius="40.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="circleTwo" fill="#ff1f1f" layoutX="290.0" layoutY="392.0" radius="40.0" stroke="BLACK" strokeType="INSIDE" />
+               </children>
+            </Pane>
+         </center></BorderPane>
    </children>
 </VBox>

@@ -1,6 +1,11 @@
 package controller;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -34,20 +39,33 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.*;
-import threads.ThreadImageOne;
 
 public class PIBController {
 
+	// relation
 	private Software en;
 
-	public PIBController() {
-		en = new Software();
+	public PIBController() throws FileNotFoundException, IOException, ClassNotFoundException {
+		loadData();
+		//initialize();
 	}
-	// relation
+	public void initialize() {
+		circle = new Circle();
+	}
+	private void loadData() throws FileNotFoundException, IOException, ClassNotFoundException {
+
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data/data.fiat-arboleda"));
+		en = (Software) ois.readObject();
+		if (en == null) {
+			en = new Software();
+		}
+		ois.close();
+	}
 
 	@FXML
 	private BorderPane mainScreen;
@@ -55,6 +73,10 @@ public class PIBController {
 	private ImageView imageOne;
 	@FXML
 	private ImageView imageTwo;
+	@FXML
+	private Circle circle;
+	@FXML
+	private Circle circleTwo;
 	// ----------------
 	// agregar pais
 	// ----------------
@@ -110,10 +132,15 @@ public class PIBController {
 	private TextField dueño;
 	private TextField calificacion;
 	private TextField cantidad;
-	//ventana extra de educacion
+	// ventana extra de educacion
 	private TextField gastosEdu;
 	private TextField typeEdu;
 	private TextField rector;
+	// venatana extra de financiera
+	private TextField gastosFinan;
+	private TextField gananciasFinan;
+	private TextField intereses;
+	private TextField permiso;
 	// agregar vehiculo
 	// ----------------------
 	@FXML
@@ -122,6 +149,10 @@ public class PIBController {
 	private TextField tipoVehiculo;
 	@FXML
 	private TextField idVehiculo;
+	@FXML
+	private TextField empresaVehi;
+	@FXML
+	private TextField paisVehi;
 	// ----------------------
 	// agregar ciudadano
 	// ----------------------
@@ -148,11 +179,11 @@ public class PIBController {
 	@FXML
 	private TextField extraEducacion;
 	@FXML
-	private ToggleGroup pedigree;
+	private TextField eduNiño;
 	@FXML
-	private RadioButton si;
+	private TextField pedigree;
 	@FXML
-	private RadioButton no;
+	private TextField race;
 	// --------------------
 	// table view sort
 	// --------------------
@@ -172,6 +203,24 @@ public class PIBController {
 	private TableColumn<Country, String> columnSea;
 
 	private ObservableList<String> creditsList;
+	// -----------------
+	// DAR PIB
+	// ----------------
+	@FXML
+	private TextField pibPresidente;
+	@FXML
+	private TextField pibPais;
+	@FXML
+	private TextField resultadoPais;
+	@FXML
+	private TextField resultadoPresidente;
+
+	@FXML
+	public void saveData() throws FileNotFoundException, IOException {
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data/data.fiat-arboleda"));
+		oos.writeObject(en);
+		oos.close();
+	}
 
 	// -----------------------------------------------------
 	// INTERFAZ AGREGAR
@@ -185,10 +234,16 @@ public class PIBController {
 
 		licor = new TextField();
 		adultos();
-
+		
+		eduNiño = new TextField();
+		eduNiño.setPromptText("Privada/Publica");
 		extraEducacion = new TextField();
+		extraEducacion.setPromptText("Gastos en educacion");
 		niño();
-
+		
+		race = new TextField();
+		pedigree = new TextField();
+		pedigree.setPromptText("sí/no");
 		mascota();
 
 		mainScreen.getChildren().clear();
@@ -236,13 +291,43 @@ public class PIBController {
 
 		tf = new TextField();
 		transporte();
-		
-		
+
 		gastosEdu = new TextField();
 		typeEdu = new TextField();
 		typeEdu.setPromptText("Privada/Publica");
 		rector = new TextField();
 		educacion();
+
+		gastosFinan = new TextField();
+		gananciasFinan = new TextField();
+		intereses = new TextField();
+		permiso = new TextField();
+		permiso.setPromptText("sí o no");
+		financiera();
+
+		mainScreen.getChildren().clear();
+		mainScreen.setCenter(pib);
+	}
+
+	// --------------------------
+	// DAR PIB PAIS
+	// -------------------------
+	@FXML
+	public void darPibPais(ActionEvent event) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PIBPais.fxml"));
+		fxmlLoader.setController(this);
+
+		Parent pib = fxmlLoader.load();
+
+		mainScreen.getChildren().clear();
+		mainScreen.setCenter(pib);
+	}
+	@FXML
+	public void darPibPresidente(ActionEvent event) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PIBPresidente.fxml"));
+		fxmlLoader.setController(this);
+
+		Parent pib = fxmlLoader.load();
 
 		mainScreen.getChildren().clear();
 		mainScreen.setCenter(pib);
@@ -297,6 +382,30 @@ public class PIBController {
 		mainScreen.getChildren().clear();
 		mainScreen.setCenter(pib);
 		barChartPresident();
+	}
+
+	@FXML
+	public void loadSortSea(ActionEvent event) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Ordenar.fxml"));
+		fxmlLoader.setController(this);
+
+		Parent pib = fxmlLoader.load();
+
+		mainScreen.getChildren().clear();
+		mainScreen.setCenter(pib);
+		barChartSea();
+	}
+
+	@FXML
+	public void loadSortSpending(ActionEvent event) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Ordenar.fxml"));
+		fxmlLoader.setController(this);
+
+		Parent pib = fxmlLoader.load();
+
+		mainScreen.getChildren().clear();
+		mainScreen.setCenter(pib);
+		barChartSpending();
 	}
 
 	// ---------------------------------
@@ -374,6 +483,44 @@ public class PIBController {
 		columnSpending.setCellValueFactory(new PropertyValueFactory<Country, String>("publicSpending"));
 		columnSea.setCellValueFactory(new PropertyValueFactory<Country, String>("sea"));
 	}
+	// ---------------------------------
+	// SORT BY SEA
+	// ---------------------------------
+
+	public void barChartSea() {
+
+		en.sortCountriesBySea();
+
+		ObservableList<Country> observableList;
+		observableList = FXCollections.observableArrayList(en.getCountries());
+
+		countryListTable.setItems(observableList);
+		columnName.setCellValueFactory(new PropertyValueFactory<Country, String>("name"));
+		columnPopulation.setCellValueFactory(new PropertyValueFactory<Country, String>("population"));
+		columnExtension.setCellValueFactory(new PropertyValueFactory<Country, String>("extension"));
+		columnPresident.setCellValueFactory(new PropertyValueFactory<Country, String>("president"));
+		columnSpending.setCellValueFactory(new PropertyValueFactory<Country, String>("publicSpending"));
+		columnSea.setCellValueFactory(new PropertyValueFactory<Country, String>("sea"));
+	}
+	// ---------------------------------
+	// SORT BY PUBLIC SPEDING
+	// ---------------------------------
+
+	public void barChartSpending() {
+
+		en.sortCountriesByPublicSpending();
+
+		ObservableList<Country> observableList;
+		observableList = FXCollections.observableArrayList(en.getCountries());
+
+		countryListTable.setItems(observableList);
+		columnName.setCellValueFactory(new PropertyValueFactory<Country, String>("name"));
+		columnPopulation.setCellValueFactory(new PropertyValueFactory<Country, String>("population"));
+		columnExtension.setCellValueFactory(new PropertyValueFactory<Country, String>("extension"));
+		columnPresident.setCellValueFactory(new PropertyValueFactory<Country, String>("president"));
+		columnSpending.setCellValueFactory(new PropertyValueFactory<Country, String>("publicSpending"));
+		columnSea.setCellValueFactory(new PropertyValueFactory<Country, String>("sea"));
+	}
 
 	@FXML
 	public void transporte() {
@@ -424,46 +571,46 @@ public class PIBController {
 
 	@FXML
 	public void cooperative() {
+
 		Button bt = new Button();
 		Stage s = new Stage();
 
 		cooperativa.setOnAction(e -> {
 			Pane p = new Pane();
-
 			Label inf = new Label();
 			inf.setText("¡INFO EXTRA!");
-			inf.setLayoutX(128);
-			inf.setLayoutY(29);
+			inf.setLayoutX(123);
+			inf.setLayoutY(14);
 
 			Label lb = new Label();
 			lb.setText("Objetivo:");
-			lb.setLayoutX(47.0);
+			lb.setLayoutX(27.0);
 			lb.setLayoutY(65.0);
-			// tfCopera
-			tfCopera.setLayoutX(193);
-			tfCopera.setLayoutY(61);
-			// label calificacion
-			Label cali = new Label();
-			cali.setText("Calificación:");
-			cali.setLayoutX(47.0);
-			cali.setLayoutY(101.0);
-			// califi
-			califi.setLayoutX(193);
+			// ganancias text
+			tfCopera.setLayoutX(198.0);
+			tfCopera.setLayoutY(61.0);
+			// label type
+			Label type = new Label();
+			type.setText("calificación:");
+			type.setLayoutX(27.0);
+			type.setLayoutY(101.0);
+			// dueño text
+			califi.setLayoutX(198.0);
 			califi.setLayoutY(97);
 
 			bt.setText("¡OK!");
-			bt.setLayoutX(160);
-			bt.setLayoutY(145);
+			bt.setLayoutX(167);
+			bt.setLayoutY(139);
 
-			p.getChildren().addAll(inf, lb, tf, cali, califi, bt);
+			p.getChildren().addAll(inf, lb, tfCopera, type, califi, bt);
 
-			Scene sc = new Scene(p, 410, 184);
+			Scene sc = new Scene(p, 390, 184);
 			s.setScene(sc);
 			s.show();
 
 		});
 		bt.setOnAction(e -> {
-			if (tfCopera.getText().equals("") || califi.getText().equals("")) {
+			if (pedigree.getText().equals("") || race.getText().equals("")){
 				Alert error = new Alert(AlertType.WARNING);
 				error.setTitle("Fallo en el registro");
 				error.setHeaderText("Alguno de los requerimientos está vacío");
@@ -471,7 +618,9 @@ public class PIBController {
 
 				error.showAndWait();
 			} else {
+
 				s.close();
+
 			}
 		});
 	}
@@ -549,6 +698,7 @@ public class PIBController {
 		});
 
 	}
+
 	@FXML
 	public void educacion() {
 
@@ -612,6 +762,71 @@ public class PIBController {
 
 			}
 		});
+	}
+
+	@FXML
+	public void financiera() {
+
+		Button bt = new Button();
+		Stage s = new Stage();
+
+		financiera.setOnAction(e -> {
+			Pane p = new Pane();
+			Label inf = new Label();
+			inf.setText("¡INFO EXTRA!");
+			inf.setLayoutX(123);
+			inf.setLayoutY(14);
+			// label calificacion
+			Label ganan = new Label();
+			ganan.setText("Ganancias:");
+			ganan.setLayoutX(27.0);
+			ganan.setLayoutY(101.0);
+			// ganancias text
+			gananciasFinan.setLayoutX(198.0);
+			gananciasFinan.setLayoutY(97);
+			// label caificacion
+			Label inte = new Label();
+			inte.setText("Tasa de interés:");
+			inte.setLayoutX(27.0);
+			inte.setLayoutY(136.0);
+			// intereses text
+			intereses.setLayoutX(198.0);
+			intereses.setLayoutY(132.0);
+			// label cantidad
+			Label permi = new Label();
+			permi.setText("Permiso:");
+			permi.setLayoutX(27.0);
+			permi.setLayoutY(174.0);
+			// permiso text
+			permiso.setLayoutX(198.0);
+			permiso.setLayoutY(170);
+
+			bt.setText("¡OK!");
+			bt.setLayoutX(167);
+			bt.setLayoutY(211);
+
+			p.getChildren().addAll(inf, intereses, inte, permiso, permi, bt);
+
+			Scene sc = new Scene(p, 450, 300);
+			s.setScene(sc);
+			s.show();
+
+		});
+		bt.setOnAction(e -> {
+			if (gastosFinan.getText().equals("") || intereses.getText().equals("") || permiso.getText().equals("")
+					|| permiso.getText().equals("")) {
+				Alert error = new Alert(AlertType.WARNING);
+				error.setTitle("Fallo en el registro");
+				error.setHeaderText("Alguno de los requerimientos está vacío");
+				error.setContentText("Por favor llene todos los campos");
+
+				error.showAndWait();
+			} else {
+
+				s.close();
+
+			}
+		});
 
 	}
 
@@ -633,151 +848,157 @@ public class PIBController {
 			successful.setHeaderText(null);
 			successful.setContentText("EL PAÍS NO EXISTE.");
 			successful.showAndWait();
+		} else {
+			if (transporte.isSelected()) {
+				Double gastos = Double.parseDouble(gasto);
+				Double ganancias = Double.parseDouble(tf.getText());
+				Transport add = new Transport(name, id, date, gastos, ganancias);
+
+				try {
+					en.addEnterprise(add, c.getName());
+
+					Alert successful = new Alert(AlertType.INFORMATION);
+					successful.setTitle("Registro exitoso");
+					successful.setHeaderText(null);
+					successful.setContentText("Su empresa de tipo transporte ha sido agregada de forma exitosa");
+
+					successful.showAndWait();
+
+				} catch (RepeatedEnterpriseException e) {
+					Alert successful = new Alert(AlertType.ERROR);
+					successful.setTitle("ERROR EN REGISTRO");
+					successful.setHeaderText(null);
+					successful.setContentText("La empresa ya existe.");
+					successful.showAndWait();
+				}
+
+			} else if (cooperativa.isSelected()) {
+				Double gastos = Double.parseDouble(gasto);
+				Cooperative add = new Cooperative(name, id, date, gastos, tfCopera.getText(),
+						(Integer.parseInt(califi.getText())));
+
+				try {
+					en.addEnterprise(add, c.getName());
+					Alert successful = new Alert(AlertType.INFORMATION);
+					successful.setTitle("Registro exitoso");
+					successful.setHeaderText(null);
+					successful.setContentText("Su empresa de tipo cooperativa ha sido agregada de forma exitosa");
+
+					successful.showAndWait();
+				} catch (RepeatedEnterpriseException e) {
+					Alert successful = new Alert(AlertType.ERROR);
+					successful.setTitle("ERROR EN REGISTRO");
+					successful.setHeaderText(null);
+					successful.setContentText("La empresa ya existe.");
+					successful.showAndWait();
+				}
+
+			} else if (supermercados.isSelected()) {
+				Double gastos = Double.parseDouble(gasto);
+				SupermarketChain add = new SupermarketChain(name, id, date, gastos,
+						Double.parseDouble(ganancias.getText()), dueño.getText(),
+						(Integer.parseInt(calificacion.getText())), Integer.parseInt(cantidad.getText()));
+
+				try {
+					en.addEnterprise(add, c.getName());
+					Alert successful = new Alert(AlertType.INFORMATION);
+					successful.setTitle("Registro exitoso");
+					successful.setHeaderText(null);
+					successful.setContentText("Su cadena de supermercados ha sido agregada de forma exitosa");
+
+					successful.showAndWait();
+				} catch (RepeatedEnterpriseException e) {
+					Alert successful = new Alert(AlertType.ERROR);
+					successful.setTitle("ERROR EN REGISTRO");
+					successful.setHeaderText(null);
+					successful.setContentText("La empresa ya existe.");
+					successful.showAndWait();
+				}
+
+			} else if (educacion.isSelected()) {
+				Double gastos = Double.parseDouble(gastosEdu.getText());
+				String type = typeEdu.getText();
+				String recto = rector.getText();
+				Education add = new Education(name, id, date, gastos, type, recto);
+
+				try {
+					en.addEnterprise(add, c.getName());
+
+					Alert successful = new Alert(AlertType.INFORMATION);
+					successful.setTitle("Registro exitoso");
+					successful.setHeaderText(null);
+					successful.setContentText("Su empresa de tipo eduación ha sido agregada de forma exitosa");
+
+					successful.showAndWait();
+				} catch (RepeatedEnterpriseException e) {
+					Alert successful = new Alert(AlertType.ERROR);
+					successful.setTitle("ERROR EN REGISTRO");
+					successful.setHeaderText(null);
+					successful.setContentText("La empresa ya existe.");
+					successful.showAndWait();
+				}
+
+			} else if (financiera.isSelected()) {
+				Double gastos = Double.parseDouble(gasto);
+				double earnings = Double.parseDouble(gananciasFinan.getText());
+				double interestRate = Double.parseDouble(intereses.getText());
+				boolean permission = true;
+				if (permiso.getText().equalsIgnoreCase("no")) {
+					permission = false;
+				} else {
+					permission = true;
+				}
+				Financial add = new Financial(name, id, date, gastos, earnings, interestRate, permission);
+
+				try {
+					en.addEnterprise(add, c.getName());
+					Alert successful = new Alert(AlertType.INFORMATION);
+					successful.setTitle("Registro exitoso");
+					successful.setHeaderText(null);
+					successful.setContentText("Su empresa de tipo financiera ha sido agregada de forma exitosa");
+
+					successful.showAndWait();
+				} catch (RepeatedEnterpriseException e) {
+					Alert successful = new Alert(AlertType.ERROR);
+					successful.setTitle("ERROR EN REGISTRO");
+					successful.setHeaderText(null);
+					successful.setContentText("La empresa ya existe.");
+					successful.showAndWait();
+				}
+
+			}
+			if (tipo.getSelectedToggle() == null || nombreEmpresa.getText().equals("") || idEmpresa.getText().equals("")
+					|| fechaCreacion.getText().equals("") || gastosEmpresa.getText().equals("")) {
+
+				Alert error = new Alert(AlertType.WARNING);
+				error.setTitle("Fallo en el registro");
+				error.setHeaderText("Alguno de los requerimientos está vacío");
+				error.setContentText("Por favor llene todos los campos");
+
+				error.showAndWait();
+			}
+			// re cargar la interfaz
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AgregarEmpresa.fxml"));
+			fxmlLoader.setController(this);
+
+			Parent pib = fxmlLoader.load();
+
+			ganancias = new TextField();
+			dueño = new TextField();
+			calificacion = new TextField();
+			cantidad = new TextField();
+			supermarket();
+
+			tfCopera = new TextField();
+			califi = new TextField();
+			cooperative();
+
+			tf = new TextField();
+			transporte();
+
+			mainScreen.getChildren().clear();
+			mainScreen.setCenter(pib);
 		}
-
-		if (transporte.isSelected()) {
-			Double gastos = Double.parseDouble(gasto);
-			Double ganancias = Double.parseDouble(tf.getText());
-			Transport add = new Transport(name, id, date, gastos, ganancias);
-
-			try {
-				en.addEnterprise(add, c.getName());
-
-				Alert successful = new Alert(AlertType.INFORMATION);
-				successful.setTitle("Registro exitoso");
-				successful.setHeaderText(null);
-				successful.setContentText("Su empresa de tipo transporte ha sido agregada de forma exitosa");
-
-				successful.showAndWait();
-
-			} catch (RepeatedEnterpriseException e) {
-				Alert successful = new Alert(AlertType.ERROR);
-				successful.setTitle("ERROR EN REGISTRO");
-				successful.setHeaderText(null);
-				successful.setContentText("La empresa ya existe.");
-				successful.showAndWait();
-			}
-
-		} else if (cooperativa.isSelected()) {
-			Double gastos = Double.parseDouble(gasto);
-			Cooperative add = new Cooperative(name, id, date, gastos, tfCopera.getText(),
-					(Integer.parseInt(califi.getText())));
-
-			try {
-				en.addEnterprise(add, c.getName());
-				Alert successful = new Alert(AlertType.INFORMATION);
-				successful.setTitle("Registro exitoso");
-				successful.setHeaderText(null);
-				successful.setContentText("Su empresa de tipo cooperativa ha sido agregada de forma exitosa");
-
-				successful.showAndWait();
-			} catch (RepeatedEnterpriseException e) {
-				Alert successful = new Alert(AlertType.ERROR);
-				successful.setTitle("ERROR EN REGISTRO");
-				successful.setHeaderText(null);
-				successful.setContentText("La empresa ya existe.");
-				successful.showAndWait();
-			}
-
-		} else if (supermercados.isSelected()) {
-			Double gastos = Double.parseDouble(gasto);
-			SupermarketChain add = new SupermarketChain(name, id, date, gastos, Double.parseDouble(ganancias.getText()),
-					dueño.getText(), (Integer.parseInt(calificacion.getText())), Integer.parseInt(cantidad.getText()));
-
-			try {
-				en.addEnterprise(add, c.getName());
-				Alert successful = new Alert(AlertType.INFORMATION);
-				successful.setTitle("Registro exitoso");
-				successful.setHeaderText(null);
-				successful.setContentText("Su cadena de supermercados ha sido agregada de forma exitosa");
-
-				successful.showAndWait();
-			} catch (RepeatedEnterpriseException e) {
-				Alert successful = new Alert(AlertType.ERROR);
-				successful.setTitle("ERROR EN REGISTRO");
-				successful.setHeaderText(null);
-				successful.setContentText("La empresa ya existe.");
-				successful.showAndWait();
-			}
-
-		} else if (educacion.isSelected()) {
-			Double gastos = Double.parseDouble(gastosEdu.getText());
-			String type = typeEdu.getText();
-			String recto = rector.getText();
-			Education add = new Education(name, id, date, gastos, type, recto);
-
-			try {
-				en.addEnterprise(add, c.getName());
-
-				Alert successful = new Alert(AlertType.INFORMATION);
-				successful.setTitle("Registro exitoso");
-				successful.setHeaderText(null);
-				successful.setContentText("Su empresa de tipo eduación ha sido agregada de forma exitosa");
-
-				successful.showAndWait();
-			} catch (RepeatedEnterpriseException e) {
-				Alert successful = new Alert(AlertType.ERROR);
-				successful.setTitle("ERROR EN REGISTRO");
-				successful.setHeaderText(null);
-				successful.setContentText("La empresa ya existe.");
-				successful.showAndWait();
-			}
-
-		} else if (financiera.isSelected()) {
-			Double gastos = Double.parseDouble(gasto);
-			double earnings = 0.0;
-			double interestRate = 0.0;
-			boolean permission = true;
-			Financial add = new Financial(name, id, date, gastos, earnings, interestRate, permission);
-
-			try {
-				en.addEnterprise(add, c.getName());
-				Alert successful = new Alert(AlertType.INFORMATION);
-				successful.setTitle("Registro exitoso");
-				successful.setHeaderText(null);
-				successful.setContentText("Su empresa de tipo financiera ha sido agregada de forma exitosa");
-
-				successful.showAndWait();
-			} catch (RepeatedEnterpriseException e) {
-				Alert successful = new Alert(AlertType.ERROR);
-				successful.setTitle("ERROR EN REGISTRO");
-				successful.setHeaderText(null);
-				successful.setContentText("La empresa ya existe.");
-				successful.showAndWait();
-			}
-
-		}
-		if (tipo.getSelectedToggle() == null || nombreEmpresa.getText().equals("") || idEmpresa.getText().equals("")
-				|| fechaCreacion.getText().equals("") || gastosEmpresa.getText().equals("")) {
-
-			Alert error = new Alert(AlertType.WARNING);
-			error.setTitle("Fallo en el registro");
-			error.setHeaderText("Alguno de los requerimientos está vacío");
-			error.setContentText("Por favor llene todos los campos");
-
-			error.showAndWait();
-		}
-		// re cargar la interfaz
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AgregarEmpresa.fxml"));
-		fxmlLoader.setController(this);
-
-		Parent pib = fxmlLoader.load();
-
-		ganancias = new TextField();
-		dueño = new TextField();
-		calificacion = new TextField();
-		cantidad = new TextField();
-		supermarket();
-
-		tfCopera = new TextField();
-		califi = new TextField();
-		cooperative();
-
-		tf = new TextField();
-		transporte();
-
-		mainScreen.getChildren().clear();
-		mainScreen.setCenter(pib);
 	}
 
 	// ------------------------------
@@ -801,13 +1022,7 @@ public class PIBController {
 			double exte = Double.parseDouble(extension.getText());
 			String presi = presidente.getText();
 			double gastosPu = Double.parseDouble(gastosPublicos.getText());
-			String m = "";
-
-			if (mar.getText().equals("")) {
-				m = "ninguno";
-			} else {
-				m = mar.getText();
-			}
+			String m = mar.getText();
 			Country added = new Country(name, habi, exte, presi, gastosPu, m);
 			try {
 				en.addCountry(added);
@@ -848,10 +1063,10 @@ public class PIBController {
 	// AGREGAR CIUDADANO
 	// ---------------------------
 
-	public void addPerson() {
+	public void addPerson() throws IOException {
 
-		if (nombreCiudadano.getText().equals("") || idCiudadano.getText().equals("")
-				|| paisCiudadano.getText().equals("") || clasi.getSelectedToggle() == null) {
+		if (nombreCiudadano.getText().equals("") || idCiudadano.getText().equals("")|| paisCiudadano.getText().equals("") 
+				|| clasi.getSelectedToggle() == null || gastosCiudadanos.getText().equals("")) {
 
 			Alert error = new Alert(AlertType.WARNING);
 			error.setTitle("Fallo en el registro");
@@ -868,71 +1083,108 @@ public class PIBController {
 				successful.setHeaderText(null);
 				successful.setContentText("EL PAÍS NO EXISTE.");
 				successful.showAndWait();
+			} else {
+				if (adulto.isSelected()) {
+
+					String adu = licor.getText();
+					Double adul = Double.parseDouble(adu);
+					Adult a = new Adult(nombreCiudadano.getText(), idCiudadano.getText(),
+							Double.parseDouble(gastosCiudadanos.getText()), adul);
+					try {
+						en.addCitizen(a, co.getName());
+						Alert successful = new Alert(AlertType.INFORMATION);
+						successful.setTitle("Registro exitoso");
+						successful.setHeaderText(null);
+						successful.setContentText("Su ciudadano adulto ha sido registrado de forma exitosa");
+						successful.showAndWait();
+					} catch (RepeatedCitizenException e) {
+						Alert successful = new Alert(AlertType.ERROR);
+						successful.setTitle("ERROR EN REGISTRO");
+						successful.setHeaderText(null);
+						successful.setContentText("El ciudadano ya existe.");
+						successful.showAndWait();
+					}
+
+				} else if (niño.isSelected()) {
+
+					Double ninio = Double.parseDouble(extraEducacion.getText());
+					boolean ti = true;
+					if(eduNiño.getText().equals("no")) {
+						ti=false;
+					}else {
+						ti=true;
+					}
+					Child c = new Child(nombreCiudadano.getText(), idCiudadano.getText(),
+							Double.parseDouble(gastosCiudadanos.getText()), ti, ninio);
+					try {
+						en.addCitizen(c, co.getName());
+
+						Alert successful = new Alert(AlertType.INFORMATION);
+						successful.setTitle("Registro exitoso");
+						successful.setHeaderText(null);
+						successful.setContentText("Su ciudadano niño ha sido registrado de forma exitosa");
+						successful.showAndWait();
+					} catch (RepeatedCitizenException e) {
+						Alert successful = new Alert(AlertType.ERROR);
+						successful.setTitle("ERROR EN REGISTRO");
+						successful.setHeaderText(null);
+						successful.setContentText("El ciudadano ya existe.");
+						successful.showAndWait();
+					}
+
+				} else if (mascota.isSelected()) {
+					
+					boolean pedi = true;
+					
+					if(pedigree.getText().equalsIgnoreCase("no")) {
+						pedi = false;
+					}else {
+						pedi = true;
+					}
+					
+					Pet p = new Pet(nombreCiudadano.getText(), idCiudadano.getText(),
+							Double.parseDouble(gastosCiudadanos.getText()), pedi, race.getText());
+					try {
+						en.addCitizen(p, co.getName());
+
+						Alert successful = new Alert(AlertType.INFORMATION);
+						successful.setTitle("Registro exitoso");
+						successful.setHeaderText(null);
+						successful.setContentText("Su mascota ha sido registrada de forma exitosa");
+						successful.showAndWait();
+					} catch (RepeatedCitizenException e) {
+						Alert successful = new Alert(AlertType.ERROR);
+						successful.setTitle("ERROR EN REGISTRO");
+						successful.setHeaderText(null);
+						successful.setContentText("El ciudadano ya existe.");
+						successful.showAndWait();
+					}
+				}
+
 			}
-			if (adulto.isSelected()) {
+			
+			//recargar
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AgregarCiudadano.fxml"));
+			fxmlLoader.setController(this);
 
-				String adu = licor.getText();
-				Double adul = Double.parseDouble(adu);
-				Adult a = new Adult(nombreCiudadano.getText(), idCiudadano.getText(),
-						Double.parseDouble(gastosCiudadanos.getText()), adul);
-				try {
-					en.addCitizen(a, co.getName());
-					Alert successful = new Alert(AlertType.INFORMATION);
-					successful.setTitle("Registro exitoso");
-					successful.setHeaderText(null);
-					successful.setContentText("Su ciudadano adulto ha sido registrado de forma exitosa");
-					successful.showAndWait();
-				} catch (RepeatedCitizenException e) {
-					Alert successful = new Alert(AlertType.ERROR);
-					successful.setTitle("ERROR EN REGISTRO");
-					successful.setHeaderText(null);
-					successful.setContentText("El ciudadano ya existe.");
-					successful.showAndWait();
-				}
+			Parent pib = fxmlLoader.load();
 
-			} else if (niño.isSelected()) {
+			licor = new TextField();
+			adultos();
+			
+			eduNiño = new TextField();
+			eduNiño.setPromptText("Privada/Publica");
+			extraEducacion = new TextField();
+			extraEducacion.setPromptText("Gastos en educacion");
+			niño();
+			
+			race = new TextField();
+			pedigree = new TextField();
+			pedigree.setPromptText("sí/no");
+			mascota();
 
-				String nino = extraEducacion.getText();
-				Double ninio = Double.parseDouble(nino);
-				Child c = new Child(nombreCiudadano.getText(), idCiudadano.getText(),
-						Double.parseDouble(gastosCiudadanos.getText()), true, ninio);
-				try {
-					en.addCitizen(c, co.getName());
-
-					Alert successful = new Alert(AlertType.INFORMATION);
-					successful.setTitle("Registro exitoso");
-					successful.setHeaderText(null);
-					successful.setContentText("Su ciudadano niño ha sido registrado de forma exitosa");
-					successful.showAndWait();
-				} catch (RepeatedCitizenException e) {
-					Alert successful = new Alert(AlertType.ERROR);
-					successful.setTitle("ERROR EN REGISTRO");
-					successful.setHeaderText(null);
-					successful.setContentText("El ciudadano ya existe.");
-					successful.showAndWait();
-				}
-
-			} else if (mascota.isSelected()) {
-
-				Pet p = new Pet(nombreCiudadano.getText(), idCiudadano.getText(),
-						Double.parseDouble(gastosCiudadanos.getText()), true, "");
-				try {
-					en.addCitizen(p, co.getName());
-
-					Alert successful = new Alert(AlertType.INFORMATION);
-					successful.setTitle("Registro exitoso");
-					successful.setHeaderText(null);
-					successful.setContentText("Su mascota ha sido registrada de forma exitosa");
-					successful.showAndWait();
-				} catch (RepeatedCitizenException e) {
-					Alert successful = new Alert(AlertType.ERROR);
-					successful.setTitle("ERROR EN REGISTRO");
-					successful.setHeaderText(null);
-					successful.setContentText("El ciudadano ya existe.");
-					successful.showAndWait();
-				}
-			}
-
+			mainScreen.getChildren().clear();
+			mainScreen.setCenter(pib);
 		}
 	}
 
@@ -993,20 +1245,30 @@ public class PIBController {
 			Pane p = new Pane();
 			Label inf = new Label();
 			inf.setText("¡INFO EXTRA!");
-			inf.setLayoutX(128);
-			inf.setLayoutY(29);
+			inf.setLayoutX(123);
+			inf.setLayoutY(14);
+
 			Label lb = new Label();
-			lb.setText("Gastos en educación:");
-			lb.setLayoutX(47.0);
-			lb.setLayoutY(101.0);
+			lb.setText("Gastos:");
+			lb.setLayoutX(27.0);
+			lb.setLayoutY(65.0);
+			// ganancias text
+			extraEducacion.setLayoutX(198.0);
+			extraEducacion.setLayoutY(61.0);
+			// label type
+			Label type = new Label();
+			type.setText("Educación privada:");
+			type.setLayoutX(27.0);
+			type.setLayoutY(101.0);
+			// dueño text
+			eduNiño.setLayoutX(198.0);
+			eduNiño.setLayoutY(97);
 
-			extraEducacion.setLayoutX(192.0);
-			extraEducacion.setLayoutY(97.0);
 			bt.setText("¡OK!");
-			bt.setLayoutX(160);
-			bt.setLayoutY(145);
+			bt.setLayoutX(167);
+			bt.setLayoutY(139);
 
-			p.getChildren().addAll(inf, lb, extraEducacion, bt);
+			p.getChildren().addAll(inf, extraEducacion, lb, eduNiño, type, bt);
 
 			Scene sc = new Scene(p, 390, 184);
 			s.setScene(sc);
@@ -1014,22 +1276,20 @@ public class PIBController {
 
 		});
 		bt.setOnAction(e -> {
+			if (extraEducacion.getText().equals("") || eduNiño.getText().equals("")){
+				Alert error = new Alert(AlertType.WARNING);
+				error.setTitle("Fallo en el registro");
+				error.setHeaderText("Alguno de los requerimientos está vacío");
+				error.setContentText("Por favor llene todos los campos");
 
-			if (educacion.getText().equals("")) {
-
-				Alert llenar = new Alert(AlertType.WARNING);
-				llenar.setTitle("Fallo en el registro");
-				llenar.setHeaderText("Alguno de los requerimientos está vacío");
-				llenar.setContentText("Por favor llene todos los campos");
-
-				llenar.showAndWait();
+				error.showAndWait();
 			} else {
 
 				s.close();
+
 			}
 		});
 	}
-
 	@FXML
 	public void mascota() {
 
@@ -1040,18 +1300,30 @@ public class PIBController {
 			Pane p = new Pane();
 			Label inf = new Label();
 			inf.setText("¡INFO EXTRA!");
-			inf.setLayoutX(128);
-			inf.setLayoutY(29);
+			inf.setLayoutX(123);
+			inf.setLayoutY(14);
+
 			Label lb = new Label();
 			lb.setText("Pedigree:");
-			lb.setLayoutX(47.0);
-			lb.setLayoutY(101.0);
+			lb.setLayoutX(27.0);
+			lb.setLayoutY(65.0);
+			// ganancias text
+			pedigree.setLayoutX(198.0);
+			pedigree.setLayoutY(61.0);
+			// label type
+			Label type = new Label();
+			type.setText("Raza:");
+			type.setLayoutX(27.0);
+			type.setLayoutY(101.0);
+			// dueño text
+			race.setLayoutX(198.0);
+			race.setLayoutY(97);
 
 			bt.setText("¡OK!");
-			bt.setLayoutX(160);
-			bt.setLayoutY(145);
+			bt.setLayoutX(167);
+			bt.setLayoutY(139);
 
-			p.getChildren().addAll(inf, lb, bt);
+			p.getChildren().addAll(inf, pedigree, lb, race, type, bt);
 
 			Scene sc = new Scene(p, 390, 184);
 			s.setScene(sc);
@@ -1059,31 +1331,106 @@ public class PIBController {
 
 		});
 		bt.setOnAction(e -> {
+			if (pedigree.getText().equals("") || race.getText().equals("")){
+				Alert error = new Alert(AlertType.WARNING);
+				error.setTitle("Fallo en el registro");
+				error.setHeaderText("Alguno de los requerimientos está vacío");
+				error.setContentText("Por favor llene todos los campos");
 
-			if (pedigree.getSelectedToggle() == null) {
-
-				Alert llenar = new Alert(AlertType.WARNING);
-				llenar.setTitle("Fallo en el registro");
-				llenar.setHeaderText("Alguno de los requerimientos está vacío");
-				llenar.setContentText("Por favor llene todos los campos");
-
-				llenar.showAndWait();
+				error.showAndWait();
 			} else {
 
 				s.close();
+
 			}
 		});
 	}
+
+	// -------------------------------
+	// AGREGAR VEHICULO
+	// -------------------------------
+	@FXML
+	public void addVehi() {
+		if (marca.getText().equals("") || tipoVehiculo.getText().equals("") || idVehiculo.getText().equals("")
+				|| empresaVehi.getText().equals("") || paisVehi.getText().equals("")) {
+
+			Alert error = new Alert(AlertType.WARNING);
+			error.setTitle("Fallo en el registro");
+			error.setHeaderText("Alguno de los requerimientos está vacío");
+			error.setContentText("Por favor llene todos los campos");
+
+			error.showAndWait();
+		} else {
+			Country c = en.searchCountry(paisVehi.getText());
+			Enterprise e = en.searchEnterprise(paisVehi.getText(), empresaVehi.getText());
+
+			if (c == null) {
+				Alert error = new Alert(AlertType.ERROR);
+				error.setTitle("ERROR EN REGISTRO");
+				error.setHeaderText(null);
+				error.setContentText("EL PAÍS NO EXISTE.");
+				error.showAndWait();
+			} else if (e == null) {
+				Alert error = new Alert(AlertType.ERROR);
+				error.setTitle("ERROR EN REGISTRO");
+				error.setHeaderText(null);
+				error.setContentText("LA EMPRESA NO EXISTE EN ESTE PAÍS.");
+				error.showAndWait();
+			} else {
+				String marc = marca.getText();
+				String ti = tipoVehiculo.getText();
+				String idV = idVehiculo.getText();
+
+				Vehicle v = new Vehicle(ti, marc, idV);
+				try {
+					en.addVehicle(v, empresaVehi.getText(), paisVehi.getText());
+				} catch (RepeatedVehicleException e1) {
+					Alert error = new Alert(AlertType.WARNING);
+					error.setTitle("Fallo en el registro");
+					error.setHeaderText(null);
+					error.setContentText("La empresa que desea agregar ya existe");
+				}
+			}
+		}
+	}
+
+	@FXML
+	public void pibPais() {
+		Country c = en.searchCountry(pibPais.getText());
+		if(c==null) {
+			Alert error = new Alert(AlertType.ERROR);
+			error.setTitle("ERROR EN REGISTRO");
+			error.setHeaderText(null);
+			error.setContentText("LA PAÍS NO EXISTE.");
+			error.showAndWait();
+		}else {
+			resultadoPais.setText(en.PIBName(pibPais.getText()) + "");
+		}
+	}
+	@FXML
+	public void pibPresident() {
+		Country p = en.binarySearchCountryByPresident(pibPresidente.getText());
+		if(p==null) {
+			Alert error = new Alert(AlertType.ERROR);
+			error.setTitle("ERROR EN REGISTRO");
+			error.setHeaderText(null);
+			error.setContentText("EL PRESIDENTE NO EXISTE.");
+			error.showAndWait();
+		}else {
+			resultadoPresidente.setText(en.PIBPresident(pibPresidente.getText())+"");
+		}
+	}
+
 	// animation
 
-	public void moved(int x) {
-
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				imageOne.setLayoutX(x);
-			}
-		});
-	}
+//	public void moved(int x, boolean change) {
+//
+//		Platform.runLater(new Runnable() {
+//			@Override
+//			public void run() {
+//				circle.setRadius(x);
+//			}
+//		});
+//	}
 
 }

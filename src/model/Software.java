@@ -1,15 +1,17 @@
 package model;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.*;
 
 import customExceptions.*;
 
-public class Software {
+public class Software implements Serializable {
 
 	private ArrayList<Country> countries;
 
@@ -119,7 +121,7 @@ public class Software {
 
 	// Binary search
 
-	public Country binarySearchCountryByName(String e) {
+	public Country searchCountry(String e) {
 		sortCountriesByName();
 		Country a = null;
 		int begining = 0;
@@ -188,32 +190,24 @@ public class Software {
 
 	}
 
-	public double PIB(String country) {
+	public double PIBName(String country) {
 		double PIB = 0.0;
-		for (int i = 0; i < countries.size(); i++) {
-			if (countries.get(i).getName().equals(country)) {
-				PIB = countries.get(i).PIB();
-			}
-
+		Country c = searchCountry(country);
+		if (c != null) {
+			PIB = c.PIB();
 		}
+
 		return PIB;
 	}
 
-	public void saveCountries() throws IOException {
-		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data/countries.fiat"));
-		for (int i = 0; i < countries.size(); i++) {
-
-			oos.writeObject(countries.get(i));
-
+	public double PIBPresident(String president) {
+		double PIB = 0.0;
+		Country c = binarySearchCountryByPresident(president);
+		if (c != null) {
+			PIB = c.PIB();
 		}
-		oos.close();
 
-	}
-
-	public void loadCountries() throws IOException, ClassNotFoundException, SameNameCountryException {
-		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data/enterprises.fiat"));
-		countries = (ArrayList<Country>) ois.readObject();
-		ois.close();
+		return PIB;
 	}
 
 	public void addCitizen(Citizen a, String country) throws RepeatedCitizenException {
@@ -239,33 +233,12 @@ public class Software {
 			en.addEmployee(e);
 		}
 	}
-	
+
 	public void addVehicle(Vehicle v, String enterprise, String country) throws RepeatedVehicleException {
-		Transport en=(Transport) searchEnterprise(country, enterprise);
-		if(en!=null) {
+		Transport en = (Transport) searchEnterprise(country, enterprise);
+		if (en != null) {
 			en.addVehicle(v);
 		}
-	}
-
-	public Country searchCountry(String country) {
-		Country a = null;
-		boolean found = false;
-		for (int i = 0; !found && i < countries.size(); i++) {
-<<<<<<< HEAD
-			if (country.equalsIgnoreCase(countries.get(i).getName())) {
-				a = countries.get(i);
-				found = true;
-=======
-			if (country.equals(countries.get(i).getName())) {
-
-				a = countries.get(i);
-				found = true;
-
->>>>>>> a2a82e9c3aac688903205b6edd06aadd81bd8976
-			}
-		}
-		return a;
-
 	}
 
 	public Enterprise searchEnterprise(String country, String enterprise) {

@@ -152,23 +152,6 @@ public abstract class Enterprise implements Imports, Exports, Serializable {
 				+ "]";
 	}
 
-	public void loadEmployees() throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(new File("data/employees.txt")));
-		String line = "";
-		while ((line = br.readLine()) != null) {
-			String[] s = line.split(",");
-			Employee e = new Employee(s[0], s[1], Double.parseDouble(s[2]), s[3]);
-			try {
-				addEmployee(e);
-			} catch (RepeatedEmployeeException e1) {
-				e1.printStackTrace();
-			}
-
-		}
-
-		br.close();
-	}
-
 	public ArrayList<Employee> getEmployees() {
 		if (firstEmployee == null)
 			return null;
@@ -182,22 +165,6 @@ public abstract class Enterprise implements Imports, Exports, Serializable {
 
 	}
 
-	public void saveEmployees() throws IOException {
-
-		BufferedWriter bw = new BufferedWriter(new FileWriter("data/vehicles.txt"));
-		for (int i = 0; i < getEmployees().size(); i++) {
-
-			String name = getEmployees().get(i).getName();
-			String ID = getEmployees().get(i).getID();
-			double salary = getEmployees().get(i).getSalary();
-			String charge = getEmployees().get(i).getCharge();
-
-			bw.write(name + "," + ID + "," + salary + "," + charge);
-			bw.write("\n");
-		}
-		bw.close();
-	}
-
 	public Enterprise searchEnterprise(String enterprise) {
 		if (this.name.compareTo(enterprise) == 0) {
 			return this;
@@ -206,7 +173,5 @@ public abstract class Enterprise implements Imports, Exports, Serializable {
 
 		}
 	}
-
-
 
 }

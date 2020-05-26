@@ -35,23 +35,6 @@ public class Transport extends ForProfitEnterprise {
 
 	}
 
-	public void loadVehicles() throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(new File("data/vehicles.txt")));
-		String line = "";
-		while ((line = br.readLine()) != null) {
-			String[] s = line.split(",");
-			Vehicle v = new Vehicle(s[0], s[1], s[2]);
-			try {
-				addVehicle(v);
-			} catch (RepeatedVehicleException e) {
-				e.printStackTrace();
-			}
-
-		}
-
-		br.close();
-	}
-
 	public ArrayList<Vehicle> getVehicles() {
 		if (rootVehicle == null)
 			return null;
@@ -64,21 +47,5 @@ public class Transport extends ForProfitEnterprise {
 		}
 
 	}
-
-	public void save() throws IOException {
-
-		BufferedWriter bw = new BufferedWriter(new FileWriter("data/vehicles.txt"));
-		for (int i = 0; i < getVehicles().size(); i++) {
-
-			String type = getVehicles().get(i).getType();
-			String brand = getVehicles().get(i).getBrand();
-			String ID = getVehicles().get(i).getID();
-			bw.write(type + "," + brand + "," + ID);
-			bw.write("\n");
-		}
-		bw.close();
-	}
-	
-	
 
 }
